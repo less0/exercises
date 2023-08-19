@@ -4,13 +4,30 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { AuthModule } from '@auth0/auth0-angular';
+
+import { environment } from 'src/environments/environment';
+import { LoginButtonComponent } from './login-button/login-button.component';
+import { LogoutButtonComponent } from './logout-button/logout-button.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginButtonComponent,
+    LogoutButtonComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule.forRoot(
+      {
+        domain: environment.auth0Domain,
+        clientId: environment.auth0ClientId,
+        authorizationParams: {
+          redirect_uri: window.location.origin
+        }
+      }
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]
