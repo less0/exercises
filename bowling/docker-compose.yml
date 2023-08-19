@@ -1,0 +1,9 @@
+services:
+  frontend:
+    build: ./bowling-frontend
+    ports:
+      - 80:80
+  backend:
+    build: ./bowling-backend
+    ports:
+      - 80
