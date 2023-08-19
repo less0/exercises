@@ -1,4 +1,6 @@
-<app-login-button />
-<app-logout-button *ngIf="auth.user$ | async as user" />
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <app-login-button *ngIf="(auth.user$ | async) == null" />
+  <app-logout-button *ngIf="auth.user$ | async" />
+</nav>
 
 <router-outlet></router-outlet>
