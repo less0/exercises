@@ -22,7 +22,16 @@ This folder contains the .NET Core WebApi backend.
 
 #### Auth0
 
-For obvious reasons I do not include my Auth0 configuration, therefor you'll have to create your own account and set it up for the solution.
+For obvious reasons I do not include my Auth0 configuration, therefor you'll have to create your own account and set it up for the solution. I will **not** explain how to set up Auth0 here, but only how to configure this solution when you've already set up your Auth0 App.
+
+The Angular application is configured to load the Auth0 configuration from `src/environments/.env` and automatically create a `environment.ts` file in that folder if `npm run config`, `npm run build` or `npm run start` is executed. Since `npm run build` is used to build the dockerized Angular application, all you have to do is to add a `src/environments/.env` file with the following contents
+
+```
+AUTH0_CLIENT_ID={Insert your Auth0 client ID here}
+AUTH0_DOMAIN={Insert your Auth0 domain here}
+```
+
+You can find the values in the settings page of your Auth0 App.
 
 #### Docker
 
