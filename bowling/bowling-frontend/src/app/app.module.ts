@@ -10,12 +10,18 @@ import { environment } from 'src/environments/environment';
 import { LoginButtonComponent } from './login-button/login-button.component';
 import { LogoutButtonComponent } from './logout-button/logout-button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CurrentGameComponent } from './current-game/current-game.component';
+import { GamesComponent } from './games/games.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginButtonComponent,
-    LogoutButtonComponent
+    LogoutButtonComponent,
+    CurrentGameComponent,
+    GamesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
