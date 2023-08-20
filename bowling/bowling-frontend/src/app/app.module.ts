@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 
 import { AuthModule } from '@auth0/auth0-angular';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { environment } from 'src/environments/environment';
 import { LoginButtonComponent } from './login-button/login-button.component';
 import { LogoutButtonComponent } from './logout-button/logout-button.component';
@@ -26,13 +28,16 @@ import { HomeComponent } from './home/home.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     AuthModule.forRoot(
       {
         domain: environment.auth0Domain,
         clientId: environment.auth0ClientId,
         authorizationParams: {
           redirect_uri: window.location.origin
-        }
+        },
+        useRefreshTokens: true,
+        cacheLocation: "localstorage" // TODO This is required to 'survive' refreshes, but another way shall be found, for security reasons
       }
     ),
     NgbModule
