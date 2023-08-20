@@ -10,7 +10,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let game of gamesSummaries.games">
-                        <td>{{game.startedAt}}</td>
+                        <td>{{game.startedAt | date: "medium"}}</td>
                         <td>{{game.numberOfPlayers}}</td>
                         <td><div *ngIf="game.isInProgress">⌛</div></td>
                     </tr>

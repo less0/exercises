@@ -21,6 +21,11 @@ public class GamesSummaries
             {
                 result.Add("start", "/games/start");
             }
+            else
+            {
+                var runningGame = Games.Single(g => g.IsInProgress);
+                result.Add("current", $"/games/{runningGame.Id}");
+            }
 
             return new(result);
         }
