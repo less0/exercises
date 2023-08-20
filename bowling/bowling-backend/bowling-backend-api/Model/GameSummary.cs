@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 
+namespace bowling_backend_api.Model;
+
 public class GameSummary
 {
     public string Id { get; init; }

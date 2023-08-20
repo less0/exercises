@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
 
+namespace bowling_backend_api.Model;
+
 public class GamesSummaries
 {
     public ReadOnlyCollection<GameSummary> Games { get; init; }
