@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-api", "bowling-backend-api\bowling-backend-api.csproj", "{0DED909F-1562-4E4E-B902-6982D5C63A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-application", "bowling-backend-application\bowling-backend-application.csproj", "{73AF044D-5058-4753-91F3-1E9507B13C93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-core", "bowling-backend-core\bowling-backend-core.csproj", "{77CAD428-FF2B-4BB4-8C08-4713536529CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-persistence", "bowling-backend-persistence\bowling-backend-persistence.csproj", "{44CAD6CD-D138-437C-8215-DAD801828F3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-tests", "bowling-backend-tests\bowling-backend-tests.csproj", "{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DED909F-1562-4E4E-B902-6982D5C63A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DED909F-1562-4E4E-B902-6982D5C63A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DED909F-1562-4E4E-B902-6982D5C63A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DED909F-1562-4E4E-B902-6982D5C63A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73AF044D-5058-4753-91F3-1E9507B13C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73AF044D-5058-4753-91F3-1E9507B13C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73AF044D-5058-4753-91F3-1E9507B13C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73AF044D-5058-4753-91F3-1E9507B13C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77CAD428-FF2B-4BB4-8C08-4713536529CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77CAD428-FF2B-4BB4-8C08-4713536529CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77CAD428-FF2B-4BB4-8C08-4713536529CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77CAD428-FF2B-4BB4-8C08-4713536529CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44CAD6CD-D138-437C-8215-DAD801828F3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44CAD6CD-D138-437C-8215-DAD801828F3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44CAD6CD-D138-437C-8215-DAD801828F3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44CAD6CD-D138-437C-8215-DAD801828F3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
