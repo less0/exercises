@@ -430,4 +430,4 @@ e2e/*.map
 .DS_Store/
 
 .env
-environment.ts
+auth0.ts

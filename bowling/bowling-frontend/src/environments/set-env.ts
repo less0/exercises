@@ -2,22 +2,19 @@ const setEnv = () => {
     const fs = require('fs');
     const writeFile = fs.writeFile;
   // Configure Angular `environment.ts` file path
-    const targetPath = './src/environments/environment.ts';
+    const targetPath = './src/environments/auth0.ts';
   // Load node modules
     const colors = require('colors');
-    const appVersion = require('../../package.json').version;
     require('dotenv').config({
       path: 'src/environments/.env'
     });
   // `environment.ts` file structure
-    const envConfigFile = `export const environment = {
-    auth0Domain: '${process.env["AUTH0_DOMAIN"]}',
-    auth0ClientId: '${process.env["AUTH0_CLIENT_ID"]}',
-    apiUrl: '${process.env["API_URL"]}',
-    production: true,
+    const envConfigFile = `export const auth0Configuration = {
+    domain: '${process.env["AUTH0_DOMAIN"]}',
+    clientId: '${process.env["AUTH0_CLIENT_ID"]}'
   };
   `;
-    console.log(colors.magenta('The file `environment.ts` will be written with the following content: \n'));
+    console.log(colors.magenta('The file `auth0.ts` will be written with the following content: \n'));
     console.log(envConfigFile);
     writeFile(targetPath, envConfigFile, (err: any) => {
       if (err) {

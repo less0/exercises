@@ -8,7 +8,7 @@ import { AuthModule } from '@auth0/auth0-angular';
 
 import { HttpClientModule } from '@angular/common/http';
 
-import { environment } from 'src/environments/environment';
+import { auth0Configuration } from 'src/environments/auth0';
 import { LoginButtonComponent } from './login-button/login-button.component';
 import { LogoutButtonComponent } from './logout-button/logout-button.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,8 +31,8 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     AuthModule.forRoot(
       {
-        domain: environment.auth0Domain,
-        clientId: environment.auth0ClientId,
+        domain: auth0Configuration.domain,
+        clientId: auth0Configuration.clientId,
         authorizationParams: {
           redirect_uri: window.location.origin
         },
