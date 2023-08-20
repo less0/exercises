@@ -6,9 +6,9 @@
     </div>
     
     <div class="card mt-5" *ngIf="currentGame$ | async as currentGame">
-        <h5 class="card-header bg-primary text-white">Current game</h5>
+        <h5 class="card-header bg-primary text-white">Current Match</h5>
         <div class="card-body">
-            <h5>Date of match</h5>
+            <h5>Date of Match</h5>
             <div class="mb-2">{{currentGame.startedAt | date: "medium"}}</div>
             <h5>Players</h5>
             <table class="table">
