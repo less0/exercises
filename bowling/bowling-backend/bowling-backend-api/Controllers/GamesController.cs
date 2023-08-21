@@ -69,4 +69,11 @@ public class GamesController : Controller
         Console.WriteLine($"{roll.Pins} Pins rolled for {id}");
         return Ok();
     }
+
+    [HttpPost("/games/start")]
+    public IActionResult StartGame([FromBody] string[] playerNames)
+    {
+        Console.WriteLine($"Starting game with {string.Join(", ", playerNames)}");
+        return Ok();
+    }
 }
