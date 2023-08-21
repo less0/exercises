@@ -5,4 +5,5 @@ export class GameDetails {
     public startedAt : Date | undefined
     public isInProgress : boolean | undefined
     public frames : Frame[][] | undefined
+    links : {[name:string]: string;} | undefined;
 }

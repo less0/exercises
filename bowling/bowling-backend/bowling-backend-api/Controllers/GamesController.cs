@@ -62,4 +62,11 @@ public class GamesController : Controller
         };
         return Ok(details);
     }
+
+    [HttpPost("/games/{id}/roll")]
+    public IActionResult AddRoll(string id, [FromBody] Roll roll)
+    {
+        Console.WriteLine($"{roll.Pins} Pins rolled for {id}");
+        return Ok();
+    }
 }

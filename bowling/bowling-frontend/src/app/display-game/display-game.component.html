@@ -27,6 +27,20 @@
                     </div>
                 </div>
             </div>
+            <div ngbAccordionItem [collapsed]="false" *ngIf="canRoll()">
+                <h2 ngbAccordionHeader><button ngbAccordionButton>Add roll</button></h2>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <form>
+                            <div class="mb-3">
+                              <label for="exampleInputEmail1" class="form-label">Pins rolled</label>
+                              <input type="number" class="form-control" [value]="pinsRolled" id="exampleInputEmail1">
+                            </div>
+                            <button type="button" class="btn btn-primary" (click)="roll()">Submit</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
