@@ -5,24 +5,8 @@
         <h5 class="card-header bg-warning text-white">No Match in Progress</h5>
     </div>
     
-    <div class="card mt-5" *ngIf="currentGame$ | async as currentGame">
-        <h5 class="card-header bg-primary text-white">Current Match</h5>
-        <div class="card-body">
-            <h5>Date of Match</h5>
-            <div class="mb-2">{{currentGame.startedAt | date: "medium"}}</div>
-            <h5>Players</h5>
-            <table class="table">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Player Name</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let player of currentGame.players; let n = index">
-                        <td>{{n+1}}</td>
-                        <td>{{player}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div *ngIf="currentGame$ | async as currentGame">
+        <app-display-game [gameDetails]="currentGame"
+                        [cardTitle]="'Current Match'"></app-display-game>
     </div>
 </div>

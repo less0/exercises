@@ -57,7 +57,7 @@ public class GamesController : Controller
             {
                 new Frame[]{ new Frame(){Rolls = new int[]{1,2}, TotalScore = 3}, new Frame(){Rolls = new int[]{10}, TotalScore = 10} },
                 new Frame[]{ new Frame(){Rolls = new int[]{10}, TotalScore = 10}, new Frame(){Rolls = new int[]{9,0}, BonusPoints = 9, TotalScore = 19} },
-                new Frame[]{ new Frame(){ Rolls = new int[]{0,3}, TotalScore = 3}, new Frame(){Rolls = new int[]{2, 6}, TotalScore = 8}},
+                new Frame[]{ new Frame(){ Rolls = new int[]{0,3}, TotalScore = 3}, new Frame(){Rolls = new int[]{2, 8}, TotalScore = 10}},
             }
         };
         return Ok(details);

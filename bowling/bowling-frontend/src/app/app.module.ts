@@ -17,6 +17,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CurrentGameComponent } from './current-game/current-game.component';
 import { GamesComponent } from './games/games.component';
 import { HomeComponent } from './home/home.component';
+import { DisplayGameComponent } from './display-game/display-game.component';
+import { FrameComponent } from './frame/frame.component';
+import { FramesTableComponent } from './frames-table/frames-table.component';
+import { PlayersInfoComponent } from './players-info/players-info.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import { HomeComponent } from './home/home.component';
     LogoutButtonComponent,
     CurrentGameComponent,
     GamesComponent,
-    HomeComponent
+    HomeComponent,
+    DisplayGameComponent,
+    FrameComponent,
+    FramesTableComponent,
+    PlayersInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,23 @@
+<table class="table table-bordered w-auto m-auto center">
+    <thead>
+        <tr>
+            <th class="text-center col-md-1">1</th>
+            <th class="text-center col-md-1">2</th>
+            <th class="text-center col-md-1">3</th>
+            <th class="text-center col-md-1">4</th>
+            <th class="text-center col-md-1">5</th>
+            <th class="text-center col-md-1">6</th>
+            <th class="text-center col-md-1">7</th>
+            <th class="text-center col-md-1">8</th>
+            <th class="text-center col-md-1">9</th>
+            <th class="text-center col-md-1">10</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let playerFrames of frames">
+            <td *ngFor="let frame of playerFrames" class="p-0">
+                <app-frame [frame]="frame"></app-frame>
+            </td>
+        </tr>
+    </tbody>
+</table>

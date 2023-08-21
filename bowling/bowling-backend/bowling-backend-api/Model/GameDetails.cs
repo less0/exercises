@@ -18,7 +18,10 @@ public class GameDetails
     {
         get
         {
-            Dictionary<string, string> result = new();
+            Dictionary<string, string> result = new()
+            {
+                ["self"] = $"/games/{Id}"
+            };
 
             if(IsInProgress)
             {

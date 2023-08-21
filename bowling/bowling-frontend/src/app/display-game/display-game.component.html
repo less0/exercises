@@ -1,0 +1,32 @@
+<div class="card mt-5">
+    <h5 class="card-header bg-primary text-white">{{cardTitle}}</h5>
+    <div class="card-body">
+        <div ngbAccordion>
+            <div ngbAccordionItem>
+                <h2 ngbAccordionHeader><button ngbAccordionButton>Match info</button></h2>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <div><label class="fw-semibold">Started at:</label> {{gameDetails.startedAt | date: "medium"}}</div>
+                        <div><label class="fw-semibold">In progress:</label> {{gameDetails.isInProgress}}</div>
+                    </div>
+                </div>
+            </div>
+            <div ngbAccordionItem>
+                <h2 ngbAccordionHeader><button ngbAccordionButton>Players</button></h2>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <app-players-info [players]="gameDetails.players!"></app-players-info>
+                    </div>
+                </div>
+            </div>
+            <div ngbAccordionItem [collapsed]="false">
+                <h2 ngbAccordionHeader><button ngbAccordionButton>Frames</button></h2>
+                <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                        <app-frames-table [frames]="gameDetails.frames!"></app-frames-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

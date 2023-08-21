@@ -1,0 +1,12 @@
+<table class="table w-auto">
+    <thead>
+        <th scope="col">#</th>
+        <th scope="col">Player Name</th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let player of players; let n = index">
+            <td>{{n+1}}</td>
+            <td>{{player}}</td>
+        </tr>
+    </tbody>
+</table>
