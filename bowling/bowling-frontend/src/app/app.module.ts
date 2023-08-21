@@ -23,6 +23,8 @@ import { FramesTableComponent } from './frames-table/frames-table.component';
 import { PlayersInfoComponent } from './players-info/players-info.component';
 import { LoginMessageComponent } from './login-message/login-message.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
+import { AddGameComponent } from './add-game/add-game.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,12 +39,14 @@ import { WelcomeMessageComponent } from './welcome-message/welcome-message.compo
     FramesTableComponent,
     PlayersInfoComponent,
     LoginMessageComponent,
-    WelcomeMessageComponent
+    WelcomeMessageComponent,
+    AddGameComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     AuthModule.forRoot(
       {
         domain: auth0Configuration.domain,

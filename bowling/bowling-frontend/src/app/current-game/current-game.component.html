@@ -2,6 +2,7 @@
 
 <div class="card" *ngIf="(currentGame$ | async) === null">
     <h5 class="card-header bg-warning text-white">No Match in Progress</h5>
+    <app-add-game></app-add-game>
 </div>
 
 <div *ngIf="currentGame$ | async as currentGame">

@@ -1,0 +1,17 @@
+<div class="p-2">
+    <form [formGroup]="form">
+        <div formArrayName="players">
+            <div class="mb-2" *ngFor="let playerForm of players.controls; let i = index">
+                <div [formGroupName]="i">
+                    <label class="form-label" for="nameControl{{i}}">Name Player #{{i+1}}: </label>
+                    <input formControlName="name" placeholder="Name" class="form-control" [ngClass]="{'is-invalid' : playerForm.invalid && validateForm}" id="nameControl{{i}}">
+                </div>
+            </div>
+        </div>
+        <div *ngIf="form.invalid && validateForm" class="text-danger">
+            Please provide names for all players
+        </div>
+    </form>
+    <button type="button" class="btn btn-success" (click)="addPlayer()">Add player</button>
+    <button type="button" class="btn btn-primary" (click)="startGame()">Start game</button>
+</div>
