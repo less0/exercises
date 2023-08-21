@@ -1,12 +1,11 @@
-<div class="container">
-    <h3 class="mt-5" *ngIf="(currentGame$ | async) === undefined">Loading data...</h3>
+<h3 *ngIf="(currentGame$ | async) === undefined">Loading data...</h3>
 
-    <div class="card mt-5" *ngIf="(currentGame$ | async) === null">
-        <h5 class="card-header bg-warning text-white">No Match in Progress</h5>
-    </div>
-    
-    <div *ngIf="currentGame$ | async as currentGame">
-        <app-display-game [gameDetails]="currentGame"
-                        [cardTitle]="'Current Match'"></app-display-game>
-    </div>
+<div class="card" *ngIf="(currentGame$ | async) === null">
+    <h5 class="card-header bg-warning text-white">No Match in Progress</h5>
 </div>
+
+<div *ngIf="currentGame$ | async as currentGame">
+    <app-display-game [gameDetails]="currentGame"
+                    [cardTitle]="'Current Match'"></app-display-game>
+</div>
+

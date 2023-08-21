@@ -1,25 +1,22 @@
-<div class="container">
-    <div class="card mt-5" *ngIf="gamesSummaries$ | async as gamesSummaries">
-        <h5 class="card-header bg-primary text-white">Matches</h5>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <th scope="col">Date</th>
-                    <th scope="col"># of Players</th>
-                    <th scope="col">Is in Progress</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let game of gamesSummaries.games">
-                        <td>{{game.startedAt | date: "medium"}}</td>
-                        <td>{{game.numberOfPlayers}}</td>
-                        <td><div *ngIf="game.isInProgress">⌛</div></td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="button" class="btn btn-sm btn-primary" *ngIf="gamesSummaries.links['start'] != undefined">
-                Start new game
-            </button>
-        </div>
-
+<div class="card" *ngIf="gamesSummaries$ | async as gamesSummaries">
+    <h5 class="card-header bg-primary text-white">Matches</h5>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <th scope="col">Date</th>
+                <th scope="col"># of Players</th>
+                <th scope="col">Is in Progress</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let game of gamesSummaries.games">
+                    <td>{{game.startedAt | date: "medium"}}</td>
+                    <td>{{game.numberOfPlayers}}</td>
+                    <td><div *ngIf="game.isInProgress">⌛</div></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-sm btn-primary" *ngIf="gamesSummaries.links['start'] != undefined">
+            Start new game
+        </button>
     </div>
 </div>

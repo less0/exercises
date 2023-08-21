@@ -1,4 +1,4 @@
-<div class="card mt-5" *ngIf="(auth.isAuthenticated$ | async) == false">
+<div class="card" *ngIf="(auth.isAuthenticated$ | async) == false">
     <h5 class="card-header bg-warning text-white">Not logged in</h5>
     <div class="card-body">
         <p class="text-body-secondary">

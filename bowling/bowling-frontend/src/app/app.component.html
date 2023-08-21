@@ -8,4 +8,6 @@
   <app-logout-button *ngIf="auth.user$ | async" />
 </nav>
 
-<router-outlet></router-outlet>
+<div class="container py-5">
+  <router-outlet></router-outlet>
+</div>
