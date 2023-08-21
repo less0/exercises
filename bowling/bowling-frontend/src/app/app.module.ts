@@ -50,7 +50,7 @@ import { WelcomeMessageComponent } from './welcome-message/welcome-message.compo
 
         authorizationParams: {
           redirect_uri: window.location.origin,
-          audience: "http://backend:80"
+          audience: auth0Configuration.audience
         },
 
         httpInterceptor: {

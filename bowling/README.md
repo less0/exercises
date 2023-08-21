@@ -29,9 +29,23 @@ The Angular application is configured to load the Auth0 configuration from `src/
 ```
 AUTH0_CLIENT_ID={Insert your Auth0 client ID here}
 AUTH0_DOMAIN={Insert your Auth0 domain here}
+AUTH0_AUDIENCE={Insert your Auth0 APIs identifier here}
+```
+
+Unfortunately these values have to be set for the ASP.NET Core backend separately. Therefor you have to create a file `appsettings.local.json` in the `bowling-backend-api` folder, that contains the follwing JSON
+
+```json
+{
+    "auth0": {
+        "Audience": "{Insert your Auth0 APIs identifier here}",
+        "Authority": "{Insert your Auth0 domain here}"
+    }
+}
 ```
 
 You can find the values in the settings page of your Auth0 App.
+
+Probably this process will be streamlined in the future, but that's no a priority whatsoever.
 
 #### Docker
 

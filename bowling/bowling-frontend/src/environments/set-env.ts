@@ -11,7 +11,8 @@ const setEnv = () => {
   // `environment.ts` file structure
     const envConfigFile = `export const auth0Configuration = {
     domain: '${process.env["AUTH0_DOMAIN"]}',
-    clientId: '${process.env["AUTH0_CLIENT_ID"]}'
+    clientId: '${process.env["AUTH0_CLIENT_ID"]}',
+    audience: '${process.env["AUTH0_AUDIENCE"]}'
   };
   `;
     console.log(colors.magenta('The file `auth0.ts` will be written with the following content: \n'));
