@@ -21,6 +21,8 @@ import { DisplayGameComponent } from './display-game/display-game.component';
 import { FrameComponent } from './frame/frame.component';
 import { FramesTableComponent } from './frames-table/frames-table.component';
 import { PlayersInfoComponent } from './players-info/players-info.component';
+import { LoginMessageComponent } from './login-message/login-message.component';
+import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { PlayersInfoComponent } from './players-info/players-info.component';
     DisplayGameComponent,
     FrameComponent,
     FramesTableComponent,
-    PlayersInfoComponent
+    PlayersInfoComponent,
+    LoginMessageComponent,
+    WelcomeMessageComponent
   ],
   imports: [
     BrowserModule,

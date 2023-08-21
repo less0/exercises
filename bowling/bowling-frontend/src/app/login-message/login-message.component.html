@@ -1,0 +1,9 @@
+<div class="card mt-5" *ngIf="(auth.isAuthenticated$ | async) == false">
+    <h5 class="card-header bg-warning text-white">Not logged in</h5>
+    <div class="card-body">
+        <p class="text-body-secondary">
+            You are currently not logged in. To use this website, click the link below. Depending on your Auth0 configuration, you can log in or create an account with email and password, or log in with a social account.
+        </p>
+        <a (click)="auth.loginWithRedirect()" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="#">Login</a>
+    </div>
+</div>
