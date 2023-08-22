@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations;
 using bowling_backend_core.DomainModel;
 using FluentAssertions;
 
-namespace bowling_backend_tests;
+namespace bowling_backend_tests.DomainModel;
 
-public class FrameTests
+public partial class FrameTests
 {
     [Fact]
     public void StartFrame_IdShouldNotBeEmpty()
@@ -21,6 +22,20 @@ public class FrameTests
 
         frame.Rolls.Should().HaveCount(1);
         frame.Rolls.Should().HaveElementAt(0, pins);
+    }
+
+    [Fact]
+    public void FirstFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    {
+        var exception = Record.Exception(() => Frame.FirstFrame(11));
+        exception.Should().BeOfType<ArgumentException>();
+    }
+
+    [Fact]
+    public void MidgameFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    {
+        var exception = Record.Exception(() => Frame.MidgameFrame(pinsWithFirstRoll: 11, cumulativeScore: 0));
+        exception.Should().BeOfType<ArgumentException>();
     }
 
     [Theory]
@@ -43,7 +58,6 @@ public class FrameTests
     }
 
     [Theory]
-    [InlineData(0, 11)]
     [InlineData(1, 10)]
     [InlineData(2, 9)]
     [InlineData(3, 8)]
@@ -68,6 +82,22 @@ public class FrameTests
         frame.AddRoll(0);
         var exception = Record.Exception(() => frame.AddRoll(0));
         exception.Should().BeOfType<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void AddRoll_IsFirstFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    {
+        var frame = Frame.FirstFrame(0);
+        var exception = Record.Exception(() => frame.AddRoll(11));
+        exception.Should().BeOfType<ArgumentException>();
+    }
+
+    [Fact]
+    public void AddRoll_IsMidgameFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    {
+        var frame = Frame.MidgameFrame(pinsWithFirstRoll: 0, cumulativeScore: 0);
+        var exception = Record.Exception(() => frame.AddRoll(11));
+        exception.Should().BeOfType<ArgumentException>();
     }
 
     [Fact]
