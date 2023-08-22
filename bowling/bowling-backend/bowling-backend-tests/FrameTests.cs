@@ -9,7 +9,7 @@ public class FrameTests
     [Fact]
     public void StartFrame_IdShouldNotBeEmpty()
     {
-        var frame = Frame.StartFrame(0);
+        var frame = Frame.FirstFrame(0);
         frame.Id.Should().NotBeEmpty();
     }  
 
@@ -18,7 +18,7 @@ public class FrameTests
     {
         var pins = Random.Shared.Next(0, 11);
 
-        var frame = Frame.StartFrame(pins);
+        var frame = Frame.FirstFrame(pins);
 
         frame.Rolls.Should().HaveCount(1);
         frame.Rolls.Should().HaveElementAt(0, pins);
@@ -37,7 +37,7 @@ public class FrameTests
     [InlineData(9, 1)]
     public void AddRoll_IsValid_RollIsAdded(int firstRollPins, int secondRollPins)
     {
-        var frame = Frame.StartFrame(firstRollPins);
+        var frame = Frame.FirstFrame(firstRollPins);
         frame.AddRoll(secondRollPins);
         frame.Rolls.Should().HaveCount(2);
         frame.Rolls.Should().HaveElementAt(1, secondRollPins);
@@ -57,7 +57,7 @@ public class FrameTests
     [InlineData(10, 1)]
     public void AddRoll_IsInvalid_ThrowsInvalidOperationException(int firstRollPins, int secondRollPins)
     {
-        var frame = Frame.StartFrame(firstRollPins);
+        var frame = Frame.FirstFrame(firstRollPins);
         var exception = Record.Exception(() => frame.AddRoll(secondRollPins));
         exception.Should().BeOfType<InvalidOperationException>();
     }
@@ -65,7 +65,7 @@ public class FrameTests
     [Fact]
     public void AddRoll_ThirdRoll_ThrowsInvalidOperationException()
     {
-        var frame = Frame.StartFrame(0);
+        var frame = Frame.FirstFrame(0);
         frame.AddRoll(0);
         var exception = Record.Exception(() => frame.AddRoll(0));
         exception.Should().BeOfType<InvalidOperationException>();
@@ -74,7 +74,7 @@ public class FrameTests
     [Fact]
     public void IsFinished_TwoRolls_ReturnsTrue()
     {
-        var frame = Frame.StartFrame(0);
+        var frame = Frame.FirstFrame(0);
         frame.AddRoll(0);
         frame.IsFinished.Should().BeTrue();
     }
@@ -82,7 +82,7 @@ public class FrameTests
     [Fact]
     public void IsFinished_Strike_ReturnsTrue()
     {
-        var frame = Frame.StartFrame(10);
+        var frame = Frame.FirstFrame(10);
         frame.IsFinished.Should().BeTrue();
     }
 
@@ -92,14 +92,14 @@ public class FrameTests
     [InlineData(9)]
     public void IsFinished_OneRollWasMadeWithoutStrike_ReturnsFalse(int pins)
     {
-        var frame = Frame.StartFrame(pins);
+        var frame = Frame.FirstFrame(pins);
         frame.IsFinished.Should().BeFalse();
     }
 
     [Fact]
     public void IsStrike_Strike_ReturnsTrue()
     {
-        var frame = Frame.StartFrame(10);
+        var frame = Frame.FirstFrame(10);
         frame.IsStrike.Should().BeTrue();
     }
 
@@ -109,7 +109,7 @@ public class FrameTests
     [InlineData(9)]
     public void IsStrike_OneRollWasMadeWithoutAStrike_ReturnsFalse(int pins)
     {
-        var frame = Frame.StartFrame(pins);
+        var frame = Frame.FirstFrame(pins);
         frame.IsStrike.Should().BeFalse();
     }
 
@@ -126,7 +126,7 @@ public class FrameTests
     [InlineData(9, 1, true)]
     public void IsSpare_ReturnsExpectedValue(int firstRollPins, int secondRollPins, bool expectedValue)
     {
-        var frame = Frame.StartFrame(firstRollPins);
+        var frame = Frame.FirstFrame(firstRollPins);
         frame.AddRoll(secondRollPins);
         frame.IsSpare.Should().Be(expectedValue);
     }
@@ -142,7 +142,7 @@ public class FrameTests
     [InlineData(3, 4, 7)]
     public void Score_IsCalculatedCorrectlyForStartFrame(int firstRollPins, int secondRollPins, int expectedScore)
     {
-        var frame = Frame.StartFrame(firstRollPins);
+        var frame = Frame.FirstFrame(firstRollPins);
         frame.AddRoll(secondRollPins);
         frame.Score.Should().Be(expectedScore);
     }
@@ -150,7 +150,7 @@ public class FrameTests
     [Fact]
     public void Score_Strike_IsCalculatedCorrectlyForStartFrame()
     {
-        var frame = Frame.StartFrame(10);
+        var frame = Frame.FirstFrame(10);
         frame.Score.Should().Be(10);
     }
 }

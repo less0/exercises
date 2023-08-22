@@ -4,7 +4,7 @@ public class Frame
 {
     private readonly List<int> _rolls;
 
-    public static Frame StartFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
+    public static Frame FirstFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
 
     private Frame(int pinsWithFirstRoll)
     {
