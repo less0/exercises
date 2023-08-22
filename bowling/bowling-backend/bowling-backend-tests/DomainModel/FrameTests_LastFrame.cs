@@ -33,4 +33,13 @@ public partial class FrameTests
         var exception = Record.Exception(() => frame.AddRoll(0));
         exception.Should().BeOfType<InvalidOperationException>();
     }
+
+    [Fact]
+    public void SetBonusPoints_IsLastFrame_ThrowsInvalidOperationException()
+    {
+        var frame = Frame.CreateLastFrame(0);
+        frame.AddRoll(0);
+        var exception = Record.Exception(() => frame.AddBonusPoints(Frame.CreateFrame(0)));
+        exception.Should().BeOfType<InvalidOperationException>();
+    }
 }
