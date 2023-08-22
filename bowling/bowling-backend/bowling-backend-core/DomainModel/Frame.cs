@@ -15,6 +15,8 @@ public class Frame
     public int[] Rolls => _rolls.ToArray();
     public bool IsFinished => _rolls.Count == 1 && _rolls[0] == 10 || _rolls.Count == 2;
     public bool IsStrike => _rolls[0] == 10;
+    public bool IsSpare => _rolls.Sum() == 10;
+    public int Score => _rolls.Sum();
 
     public void AddRoll(int pins)
     {

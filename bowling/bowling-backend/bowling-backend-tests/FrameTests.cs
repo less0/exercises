@@ -102,4 +102,55 @@ public class FrameTests
         var frame = Frame.StartFrame(10);
         frame.IsStrike.Should().BeTrue();
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(9)]
+    public void IsStrike_OneRollWasMadeWithoutAStrike_ReturnsFalse(int pins)
+    {
+        var frame = Frame.StartFrame(pins);
+        frame.IsStrike.Should().BeFalse();
+    }
+
+    [Theory]
+    [InlineData(0, 0, false)]
+    [InlineData(0, 9, false)]
+    [InlineData(1, 8, false)]
+    [InlineData(5, 4, false)]
+    [InlineData(8, 1, false)]
+    [InlineData(9, 0, false)]
+    [InlineData(0, 10, true)]
+    [InlineData(1, 9, true)]
+    [InlineData(5, 5, true)]
+    [InlineData(9, 1, true)]
+    public void IsSpare_ReturnsExpectedValue(int firstRollPins, int secondRollPins, bool expectedValue)
+    {
+        var frame = Frame.StartFrame(firstRollPins);
+        frame.AddRoll(secondRollPins);
+        frame.IsSpare.Should().Be(expectedValue);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 0)]
+    [InlineData(0, 1, 1)]
+    [InlineData(0, 9, 9)]
+    [InlineData(0, 10, 10)]
+    [InlineData(9, 0, 9)]
+    [InlineData(1, 0, 1)]
+    [InlineData(7, 3, 10)]
+    [InlineData(3, 4, 7)]
+    public void Score_IsCalculatedCorrectlyForStartFrame(int firstRollPins, int secondRollPins, int expectedScore)
+    {
+        var frame = Frame.StartFrame(firstRollPins);
+        frame.AddRoll(secondRollPins);
+        frame.Score.Should().Be(expectedScore);
+    }
+
+    [Fact]
+    public void Score_Strike_IsCalculatedCorrectlyForStartFrame()
+    {
+        var frame = Frame.StartFrame(10);
+        frame.Score.Should().Be(10);
+    }
 }
