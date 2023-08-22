@@ -1,6 +1,5 @@
 using bowling_backend_core.DomainModel;
 using FluentAssertions;
-using NuGet.Frameworks;
 
 namespace bowling_backend_tests;
 
@@ -143,6 +142,19 @@ public class FrameTests
     public void Score_IsCalculatedCorrectlyForStartFrame(int firstRollPins, int secondRollPins, int expectedScore)
     {
         var frame = Frame.FirstFrame(firstRollPins);
+        frame.AddRoll(secondRollPins);
+        frame.Score.Should().Be(expectedScore);
+    }
+
+    [Theory]
+    [InlineData(0, 0, 0, 0)]
+    [InlineData(0, 3, 3, 6)]
+    [InlineData(0, 3, 7, 10)]
+    [InlineData(1, 3, 7, 11)]
+    [InlineData(10, 3, 7, 20)]
+    public void Score_IsCalculatedCorrectlyForMidgameFrame(int cumulativeScore, int firstRollPins, int secondRollPins, int expectedScore)
+    {
+        var frame = Frame.MidgameFrame(firstRollPins, cumulativeScore);
         frame.AddRoll(secondRollPins);
         frame.Score.Should().Be(expectedScore);
     }
