@@ -5,13 +5,8 @@ public class Frame
     private readonly List<int> _rolls;
     private readonly int _cumulativeScorePriorToFrame = 0;
 
-    public static Frame FirstFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
+    public static Frame FirstFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll, 0);
     public static Frame MidgameFrame(int pinsWithFirstRoll, int cumulativeScore) => new(pinsWithFirstRoll, cumulativeScore);
-
-    private Frame(int pinsWithFirstRoll)
-    {
-        _rolls = new() { pinsWithFirstRoll };
-    }
 
     private Frame(int pinsWithFirstRoll, int cumulativeScore)
     {
