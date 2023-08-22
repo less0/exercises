@@ -3,14 +3,12 @@ namespace bowling_backend_core.DomainModel;
 public class Frame
 {
     private readonly List<int> _rolls;
-    private readonly int _cumulativeScorePriorToFrame = 0;
     private readonly bool _isLastFrame;
 
-    public static Frame FirstFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
-    public static Frame MidgameFrame(int pinsWithFirstRoll, int cumulativeScore) => new(pinsWithFirstRoll, cumulativeScore);
-    public static Frame LastFrame(int pinsWithFirstRoll, int cumulativeScore) => new Frame(pinsWithFirstRoll, cumulativeScore, true);
+    public static Frame CreateFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
+    public static Frame CreateLastFrame(int pinsWithFirstRoll) => new Frame(pinsWithFirstRoll, true);
 
-    private Frame(int pinsWithFirstRoll, int cumulativeScore = 0, bool isLastFrame = false)
+    private Frame(int pinsWithFirstRoll, bool isLastFrame = false)
     {
         if(ExceedsMaximumPinsPerRoll(pinsWithFirstRoll))
         {
@@ -18,7 +16,6 @@ public class Frame
         }
         
         _rolls = new() { pinsWithFirstRoll };
-        _cumulativeScorePriorToFrame = cumulativeScore;
         _isLastFrame = isLastFrame;
     }
 
@@ -27,7 +24,7 @@ public class Frame
     public bool IsFinished => IsNotLastFrameAndFinished || IsLastFrameFinished;
     public bool IsStrike => _rolls[0] == 10;
     public bool IsSpare => _rolls.Count > 1 && _rolls.Take(2).Sum() == 10;
-    public int Score => _rolls.Sum() + _cumulativeScorePriorToFrame;
+    public int Score => _rolls.Sum();
     private bool IsNotLastFrameAndFinished => !_isLastFrame && (_rolls.Count == 1 && _rolls[0] == 10 || _rolls.Count == 2);
     private bool IsLastFrameFinished => _isLastFrame && (((IsStrike || IsSpare) && _rolls.Count == 3) || !IsStrike && !IsSpare && _rolls.Count == 2);
 
@@ -36,6 +33,9 @@ public class Frame
         ThrowIfInvalidRoll(pins);
         _rolls.Add(pins);
     }
+
+    public void AddBonusPoints(Frame nextFrame)
+    {}
 
     private void ThrowIfInvalidRoll(int pins)
     {

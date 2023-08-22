@@ -59,13 +59,9 @@ public class BowlingGame
         var playerIndex = GetCurrentPlayerIndex();
         var frames = _frames[playerIndex];
 
-        if(!frames.Any())
+        if(!frames.Any() || frames.Last().IsFinished)
         {
-            frames.Add(Frame.FirstFrame(numberOfPins));
-        }
-        else if(frames.Last().IsFinished)
-        {
-            frames.Add(Frame.MidgameFrame(numberOfPins, 0));
+            frames.Add(Frame.CreateFrame(numberOfPins));
         }
         else
         {
