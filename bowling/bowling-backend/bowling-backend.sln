@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-persistence
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-tests", "bowling-backend-tests\bowling-backend-tests.csproj", "{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bowling-backend-persistence-tests", "bowling-backend-persistence-tests\bowling-backend-persistence-tests.csproj", "{B70F921F-25BB-4F64-BD2F-F34D95F145B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06F7CFDD-37C2-407A-AAEF-DD1AFDE2F742}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B70F921F-25BB-4F64-BD2F-F34D95F145B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B70F921F-25BB-4F64-BD2F-F34D95F145B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B70F921F-25BB-4F64-BD2F-F34D95F145B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B70F921F-25BB-4F64-BD2F-F34D95F145B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

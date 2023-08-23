@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using bowling_backend_core.Interfaces;
 
 namespace bowling_backend_core.DomainModel;
 
-public class BowlingGame : Entity
+public class BowlingGame : Entity, IAggregateRoot
 {
     List<Frame>[] _frames;
 
@@ -31,7 +32,6 @@ public class BowlingGame : Entity
             _frames[i] = new();
         }
     }
-
 
     public string[] PlayerNames { get; private set; }
     public Frame[][] Frames {
