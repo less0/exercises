@@ -32,7 +32,10 @@ public class BowlingDataContext : DbContext
                               .ToArray());
 
         modelBuilder.Entity<BowlingGame>()
-            .HasKey(frame => frame.Id);
+            .HasKey(game => game.Id);
+
+        modelBuilder.Entity<BowlingGame>()
+            .HasIndex(game => new{ game.Id, game.UserId });
 
         modelBuilder.Entity<BowlingGame>()
             .Property(game => game.PlayerNames)
