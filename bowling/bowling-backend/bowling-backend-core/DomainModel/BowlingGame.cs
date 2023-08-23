@@ -1,4 +1,6 @@
-﻿namespace bowling_backend_core.DomainModel;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace bowling_backend_core.DomainModel;
 
 public class BowlingGame
 {
@@ -11,18 +13,16 @@ public class BowlingGame
             throw new ArgumentException("Cannot start a game without players.", nameof(players));
         }
 
-        BowlingGame bowlingGame = new()
-        {
-            PlayerNames = players
-        };
-        bowlingGame.Init();
-
-        return bowlingGame;
+        return new(players);
     }
 
-    private BowlingGame()
-    {}
+    private BowlingGame(string[] players)
+    {
+        PlayerNames = players;
+        Init();
+    }
 
+    [MemberNotNull(nameof(_frames))]
     private void Init()
     {
         _frames = new List<Frame>[PlayerNames.Length];
