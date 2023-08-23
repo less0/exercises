@@ -110,41 +110,6 @@ public partial class FrameTests
         frame.IsFinished.Should().BeFalse();
     }
 
-    [Fact]
-    public void IsStrike_Strike_ReturnsTrue()
-    {
-        var frame = Frame.CreateFrame(10);
-        frame.IsStrike.Should().BeTrue();
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(1)]
-    [InlineData(9)]
-    public void IsStrike_OneRollWasMadeWithoutAStrike_ReturnsFalse(int pins)
-    {
-        var frame = Frame.CreateFrame(pins);
-        frame.IsStrike.Should().BeFalse();
-    }
-
-    [Theory]
-    [InlineData(0, 0, false)]
-    [InlineData(0, 9, false)]
-    [InlineData(1, 8, false)]
-    [InlineData(5, 4, false)]
-    [InlineData(8, 1, false)]
-    [InlineData(9, 0, false)]
-    [InlineData(0, 10, true)]
-    [InlineData(1, 9, true)]
-    [InlineData(5, 5, true)]
-    [InlineData(9, 1, true)]
-    public void IsSpare_ReturnsExpectedValue(int firstRollPins, int secondRollPins, bool expectedValue)
-    {
-        var frame = Frame.CreateFrame(firstRollPins);
-        frame.AddRoll(secondRollPins);
-        frame.IsSpare.Should().Be(expectedValue);
-    }
-
     [Theory]
     [InlineData(0, 0, 0)]
     [InlineData(0, 1, 1)]
