@@ -80,10 +80,11 @@ public partial class BowlingGameTests
         exception.Should().BeNull();
     }
 
-    [Fact]
-    public void AddRoll_SinglePlayer_GameIsLimitedToTenFrames()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]  
+    public void AddRoll_GameIsLimitedToTenFrames(params string[] players)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(players);
 
         RollAllFrames(game);
 

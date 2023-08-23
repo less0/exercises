@@ -49,6 +49,8 @@ public class BowlingGame
         }
     }
 
+    public string CurrentPlayer => IsFinished ? string.Empty : PlayerNames[GetCurrentPlayerIndex()];
+
     public void AddRoll(int numberOfPins)
     {
         if(IsFinished)
