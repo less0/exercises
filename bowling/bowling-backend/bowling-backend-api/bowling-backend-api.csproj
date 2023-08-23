@@ -9,12 +9,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\bowling-backend-application\bowling-backend-application.csproj" />
     <ProjectReference Include="..\bowling-backend-core\bowling-backend-core.csproj" />
+    <ProjectReference Include="..\bowling-backend-persistence\bowling-backend-persistence.csproj" />
   </ItemGroup>
 
 </Project>
