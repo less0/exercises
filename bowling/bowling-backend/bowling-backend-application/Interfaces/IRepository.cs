@@ -6,7 +6,9 @@ namespace bowling_backend_applicaton.Interfaces;
 public interface IRepository<T> 
     where T : Entity, IAggregateRoot
 {
-    public T GetById(Guid id);
+    public T[] GetAllByUserId(string userId);
 
-    public void Save(T entity);
+    public T GetByEntityIdAndUserId(Guid entityId, string userId);
+
+    public void Save(T entity, string userId);
 }

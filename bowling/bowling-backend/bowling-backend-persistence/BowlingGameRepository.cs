@@ -5,12 +5,17 @@ namespace bowling_backend_persistence;
 
 public class BowlingGameRepository : IRepository<BowlingGame>
 {
-    public BowlingGame GetById(Guid id)
+    public void Save(BowlingGame entity, string userId)
     {
         throw new NotImplementedException();
     }
 
-    public void Save(BowlingGame entity)
+    public BowlingGame[] GetAllByUserId(string userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public BowlingGame GetByEntityIdAndUserId(Guid gameId, string userId)
     {
         throw new NotImplementedException();
     }
