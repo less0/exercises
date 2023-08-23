@@ -117,7 +117,7 @@ public class BowlingGame
             return 0;
         }
 
-        return GetPlayerIndexWithMoreFrames() + 1;
+        return GetLastPlayerIndexWithMoreFrames() + 1;
     }
 
     private bool AllFrameListsHaveSameLength()
@@ -127,10 +127,12 @@ public class BowlingGame
                       .Count() == 1;
     }
 
-    private int GetPlayerIndexWithMoreFrames()
+    private int GetLastPlayerIndexWithMoreFrames()
     {
         return _frames.Select((frames, index) => new{index, frames})
-                      .MaxBy(x => x.frames.Count)
+                      .OrderBy(x => x.frames.Count)
+                      .ThenBy(x => x.index)
+                      .Last()
                       .index;
     }
 }

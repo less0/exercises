@@ -1,12 +1,23 @@
 using bowling_backend_core.DomainModel;
 using FluentAssertions;
 
-namespace bowling_backend_tests;
+namespace bowling_backend_tests.DomainModel;
 
-public class BowlingGameTests
+public partial class BowlingGameTests
 {
-    private readonly string[] OnePlayer = new[]{ "Player" };
-    private readonly string[] TwoPlayers = new[]{ "Player 1", "Player 2" };
+    private const int Strike = 10;
+    private static readonly string[] OnePlayer = new[]{ "Player" };
+    private static readonly string[] TwoPlayers = new[]{ "Player 1", "Player 2" };
+    private static readonly string[] ThreePlayers = new[]{ "Player 1", "Player 2", "Player 3" };
+    private static readonly string[] FourPlayers = new[]{ "Player 1", "Player 2", "Player 3", "Player 4" };
+
+    public static IEnumerable<object[]> GetPlayersCombinations()
+    {
+        yield return OnePlayer.Cast<object>().ToArray();
+        yield return TwoPlayers.Cast<object>().ToArray();
+        yield return ThreePlayers.Cast<object>().ToArray();
+        yield return FourPlayers.Cast<object>().ToArray();
+    }
 
     [Theory]
     [InlineData("Peter", "Paul", "Mary")]
@@ -31,9 +42,7 @@ public class BowlingGameTests
     }
 
     [Theory]
-    [InlineData("A")]
-    [InlineData("A", "B")]
-    [InlineData("Tick", "Trick", "Tuck")]
+    [MemberData(nameof(GetPlayersCombinations))]
     public void StartNew_FramesHasRowsAccordingToPlayers(params string[] players)
     {
         var game = BowlingGame.StartNew(players);
@@ -58,15 +67,16 @@ public class BowlingGameTests
         game.Frames[0].Length.Should().Be(expectedNumberOfFrames);
     }
 
-    [Fact]
-    public void AddRoll_SinglePlayer_LastFrameIsTreatedSpecially()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void AddRoll_LastFrameIsTreatedSpecially(params string[] playerNames)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(playerNames);
 
         RollAllFramesButLast(game);
 
-        game.AddRoll(10);
-        var exception = Record.Exception(() => game.AddRoll(10));
+        game.AddRoll(Strike);
+        var exception = Record.Exception(() => game.AddRoll(Strike));
         exception.Should().BeNull();
     }
 
@@ -125,7 +135,7 @@ public class BowlingGameTests
     {
         var game = BowlingGame.StartNew(OnePlayer);
         
-        game.AddRoll(10);
+        game.AddRoll(Strike);
         game.AddRoll(5);
         game.AddRoll(3);
 
@@ -137,8 +147,7 @@ public class BowlingGameTests
     {
         var game = BowlingGame.StartNew(OnePlayer);
 
-        game.AddRoll(5);
-        game.AddRoll(5);
+        RollRandomSpare(game);
         game.AddRoll(1);
         game.AddRoll(9);
 
@@ -155,7 +164,7 @@ public class BowlingGameTests
         game.AddRoll(0);
 
         // second player rolls strike
-        game.AddRoll(10);
+        game.AddRoll(Strike);
 
         // first player
         game.AddRoll(0);
@@ -178,8 +187,7 @@ public class BowlingGameTests
         game.AddRoll(0);
 
         // second player rolls spare
-        game.AddRoll(4);
-        game.AddRoll(6);
+        RollRandomSpare(game);
 
         // first player
         game.AddRoll(0);
@@ -192,32 +200,34 @@ public class BowlingGameTests
         game.Frames[1][0].Score.Should().Be(14);
     }
 
-    [Fact]
-    public void IsFinished_SinglePlayer_ReturnsTrueAfterLastFrameIsFinished()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void IsFinished_ReturnsTrueAfterLastFrameIsFinished(params string[] players)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(players);
         RollAllFrames(game);
         game.IsFinished.Should().BeTrue();
     }
 
-    [Fact]
-    public void IsFinished_SinglePlayer_IsNotFinishedAfterTwoStrikesInLastFrame()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void IsFinished_IsNotFinishedAfterTwoStrikesInLastFrame(params string[] players)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(players);
 
         RollAllFramesButLast(game);
+        game.AddRoll(Strike);
+        game.AddRoll(Strike);
 
         // two strikes on the last frame won't finish the game
-        game.AddRoll(10);
-        game.AddRoll(10);
-
         game.IsFinished.Should().BeFalse();
     }
 
-    [Fact]
-    public void IsFinished_SinglePlayer_IsNotFinishedAfterSpareInLastFrame()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void IsFinished_IsNotFinishedAfterSpareInLastFrame(params string[] players)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(players);
 
         RollAllFramesButLast(game);
         RollRandomSpare(game);
@@ -226,64 +236,16 @@ public class BowlingGameTests
         game.IsFinished.Should().BeFalse();
     }
 
-    [Fact]
-    public void IsFinished_SinglePlayer_IsFinishedAfterBonusRollInLastFrame()
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void IsFinished_IsFinishedAfterBonusRollInLastFrame(params string[] players)
     {
-        var game = BowlingGame.StartNew(OnePlayer);
+        var game = BowlingGame.StartNew(players);
 
         RollAllFramesButLast(game);
 
-        game.AddRoll(10);
-        game.AddRoll(10);
-        game.AddRoll(3);
-
-        game.IsFinished.Should().BeTrue();
-    }
-
-    [Fact]
-    public void IsFinished_TwoPlayers_ReturnsTrueAfterLastFrameIsFinished()
-    {
-        var game = BowlingGame.StartNew(TwoPlayers);
-        RollAllFrames(game);
-        game.IsFinished.Should().BeTrue();
-    }
-
-    [Fact]
-    public void IsFinished_TwoPlayers_IsNotFinishedAfterTwoStrikesInLastFrame()
-    {
-        var game = BowlingGame.StartNew(OnePlayer);
-
-        RollAllFramesButLast(game);
-
-        // two strikes on the last frame won't finish the game
-        game.AddRoll(10);
-        game.AddRoll(10);
-
-        game.IsFinished.Should().BeFalse();
-    }
-
-    [Fact]
-    public void IsFinished_TwoPlayers_IsNotFinishedAfterSpareInLastFrame()
-    {
-        var game = BowlingGame.StartNew(TwoPlayers);
-
-        RollAllFramesButLast(game);
-        RollRandomSpare(game);
-
-        // spare on the last frame won't finish the game
-        game.IsFinished.Should().BeFalse();
-    }
-
-    [Fact]
-    public void IsFinished_TwoPlayers_IsFinishedAfterBonusRollInLastFrame()
-    {
-        var game = BowlingGame.StartNew(TwoPlayers);
-
-        RollAllFramesButLast(game);
-
-        // two strikes on the last frame won't finish the game
-        game.AddRoll(10);
-        game.AddRoll(10);
+        game.AddRoll(Strike);
+        game.AddRoll(Strike);
         game.AddRoll(3);
 
         game.IsFinished.Should().BeTrue();
@@ -314,5 +276,13 @@ public class BowlingGameTests
 
         game.AddRoll(firstRoll);
         game.AddRoll(secondRoll);
+    }
+
+    private static void AddNRolls(BowlingGame game, int numberOfRolls)
+    {
+        for (int i = 0; i < numberOfRolls; i++)
+        {
+            game.AddRoll(0);
+        }
     }
 }
