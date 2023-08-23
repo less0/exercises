@@ -2,7 +2,7 @@
 
 namespace bowling_backend_core.DomainModel;
 
-public class BowlingGame
+public class BowlingGame : Entity
 {
     List<Frame>[] _frames;
 
@@ -34,7 +34,6 @@ public class BowlingGame
 
 
     public string[] PlayerNames { get; private set; }
-    public Guid Id { get; private set; } = Guid.NewGuid();
     public Frame[][] Frames {
         get{
             return _frames.Select(l => l.ToArray()).ToArray();

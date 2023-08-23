@@ -1,6 +1,6 @@
 namespace bowling_backend_core.DomainModel;
 
-public class Frame
+public class Frame : Entity
 {
     private readonly List<int> _rolls;
     private readonly bool _isLastFrame;
@@ -20,7 +20,6 @@ public class Frame
         _isLastFrame = isLastFrame;
     }
 
-    public Guid Id { get; private set; } = Guid.NewGuid();
     public int[] Rolls => _rolls.ToArray();
     public bool IsFinished => IsNotLastFrameAndFinished || IsLastFrameFinished;
     public int Score => _rolls.Sum() + BonusPoints;
