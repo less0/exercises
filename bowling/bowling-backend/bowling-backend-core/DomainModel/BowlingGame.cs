@@ -40,7 +40,7 @@ public class BowlingGame
             return _frames.Select(l => l.ToArray()).ToArray();
         }
     }
-    private bool IsFinished 
+    public bool IsFinished 
     {
         get
         {
@@ -59,9 +59,17 @@ public class BowlingGame
         var playerIndex = GetCurrentPlayerIndex();
         var frames = _frames[playerIndex];
 
-        if(!frames.Any() || frames[^1].IsFinished)
+        if(!frames.Any())
         {
             frames.Add(Frame.CreateFrame(numberOfPins));
+        }
+        else if(frames[^1].IsFinished && frames.Count < 9)
+        {
+            frames.Add(Frame.CreateFrame(numberOfPins));
+        }
+        else if(frames[^1].IsFinished && frames.Count == 9)
+        {
+            frames.Add(Frame.CreateLastFrame(numberOfPins));
         }
         else
         {
