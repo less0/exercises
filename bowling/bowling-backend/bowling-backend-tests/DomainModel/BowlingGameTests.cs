@@ -112,4 +112,76 @@ public class BowlingGameTests
         var exception = Record.Exception(() => game.AddRoll(0));
         exception.Should().BeOfType<InvalidOperationException>();
     }
+
+    [Fact]
+    public void AddRoll_Singleplayer_TotalScoreIsCalculatedCorrectlyForStrike()
+    {
+        var game = BowlingGame.StartNew(new[] { "Player" });
+        
+        game.AddRoll(10);
+        game.AddRoll(5);
+        game.AddRoll(3);
+
+        game.Frames[0][0].Score.Should().Be(18);
+    }
+
+    [Fact]
+    public void AddRoll_Singleplayer_TotalScoreIsCalculatedCorrectlyForSpare()
+    {
+        var game = BowlingGame.StartNew(new[] { "Player" });
+
+        game.AddRoll(5);
+        game.AddRoll(5);
+        game.AddRoll(1);
+        game.AddRoll(9);
+
+        game.Frames[0][0].Score.Should().Be(11);
+    }
+
+    [Fact]
+    public void AddRoll_TwoPlayers_TotalScoreIsCalculatedCorrectlyForStrike()
+    {
+        var game = BowlingGame.StartNew(new[] { "Player 1", "Player 2"});
+
+        // first player
+        game.AddRoll(0);
+        game.AddRoll(0);
+
+        // second player rolls strike
+        game.AddRoll(10);
+
+        // first player
+        game.AddRoll(0);
+        game.AddRoll(0);
+
+        // second player
+        game.AddRoll(4);
+        game.AddRoll(4);
+
+        game.Frames[1][0].Score.Should().Be(18);
+    }
+
+    [Fact]
+    public void AddScrole_TwoPlayers_TotalScoreIsCalculatedCorrectlyForSpare()
+    {
+        var game = BowlingGame.StartNew(new string[] { "Player 1", "Player 2"});
+        
+        // first player
+        game.AddRoll(0);
+        game.AddRoll(0);
+
+        // second player rolls spare
+        game.AddRoll(4);
+        game.AddRoll(6);
+
+        // first player
+        game.AddRoll(0);
+        game.AddRoll(0);
+
+        // second player
+        game.AddRoll(4);
+        game.AddRoll(5);
+
+        game.Frames[1][0].Score.Should().Be(14);
+    }
 }

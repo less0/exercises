@@ -59,13 +59,18 @@ public class BowlingGame
         var playerIndex = GetCurrentPlayerIndex();
         var frames = _frames[playerIndex];
 
-        if(!frames.Any() || frames.Last().IsFinished)
+        if(!frames.Any() || frames[^1].IsFinished)
         {
             frames.Add(Frame.CreateFrame(numberOfPins));
         }
         else
         {
-            frames.Last().AddRoll(numberOfPins);
+            frames[^1].AddRoll(numberOfPins);
+        }
+
+        if(frames.Count >= 2 && frames[^1].IsFinished)
+        {
+            frames[^2].AddBonusPoints(frames.Last());
         }
     }
 
