@@ -25,7 +25,10 @@ public class BowlingGameMapper
         return new Frame
         {
             Id = frame.Id,
-            PlayerIndex = playerIndex
+            PlayerIndex = playerIndex,
+            BonusPoints = frame.BonusPoints,
+            Rolls = frame.Rolls,
+            IsLastFrame = frame.IsLastFrame
         };
     }
 }

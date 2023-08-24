@@ -122,4 +122,59 @@ public class BowlingGameMapperTests
 
         mappedGame.Frames[mappedFrameIndex].Id.Should().Be(game.Frames[playerIndex][frameIndex].Id);
     }
+
+    [Fact]
+    public void Map_BonusPointsIsMappedCorrectly()
+    {
+        BowlingGameMapper mapper = new();
+        var game = BowlingGameDomain.StartNew(new [] { "Player 1" });
+
+        // first frame
+        game.AddRoll(10);
+
+        // second frame
+        game.AddRoll(4);
+        game.AddRoll(3);
+
+        var mappedGame = mapper.Map(game);
+
+        mappedGame.Frames[0].BonusPoints.Should().Be(7);
+    }
+
+    [Fact]
+    public void Map_RollsAreMappedCorrectly()
+    {
+        BowlingGameMapper mapper = new();
+        var game = BowlingGameDomain.StartNew(new[] { "Player" });
+
+        // first frame
+        game.AddRoll(3);
+        game.AddRoll(7);
+
+        // second frame
+        game.AddRoll(5);
+        game.AddRoll(4);
+
+        var mappedGame = mapper.Map(game);
+
+        mappedGame.Frames[0].Rolls.Should().BeEquivalentTo(new[] { 3, 7 });
+        mappedGame.Frames[1].Rolls.Should().BeEquivalentTo(new[] { 5, 4 });
+    }
+
+    [Fact]
+    public void Map_IsLastFrameIsMappedCorrectly()
+    {
+        BowlingGameMapper mapper = new();
+        var game = BowlingGameDomain.StartNew(new[] { "Player" });
+        for (int i = 0; i < 20; i++)
+        {
+            game.AddRoll(0);
+        }
+
+        var mappedGame = mapper.Map(game);
+    
+        mappedGame.Frames[0].IsLastFrame.Should().BeFalse();
+        mappedGame.Frames[8].IsLastFrame.Should().BeFalse();
+        mappedGame.Frames[9].IsLastFrame.Should().BeTrue();
+    }
 }
