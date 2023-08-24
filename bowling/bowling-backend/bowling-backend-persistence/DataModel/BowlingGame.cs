@@ -8,5 +8,5 @@ public class BowlingGame
 
     public string[] PlayerNames { get; set; }
 
-    public Frame[] Frames { get; set; }
+    public List<Frame> Frames { get; set; }
 }
