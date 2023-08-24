@@ -31,4 +31,30 @@ public class BowlingGameMapper
             IsLastFrame = frame.IsLastFrame
         };
     }
+
+    public BowlingGameDomain ReverseMap(BowlingGame game)
+    {
+        return BowlingGameDomain.Restore(game.Id, game.PlayerNames, ReverseMapFrames(game.Frames, game.PlayerNames.Length));
+    }
+
+    private List<FrameDomain>[] ReverseMapFrames(List<Frame> frames, int numberOfPlayers)
+    {
+        var result = new List<FrameDomain>[numberOfPlayers];
+
+        var groupedByPlayerIndex = frames.GroupBy(f => f.PlayerIndex)
+                                         .OrderBy(g => g.Key);
+
+        foreach(var framesGroup in groupedByPlayerIndex)
+        {
+            result[framesGroup.Key] = framesGroup.Select(ReverseMapFrame)
+                                                 .ToList();
+        }
+
+        return result;
+    }
+
+    private FrameDomain ReverseMapFrame(Frame frame)
+    {
+        return FrameDomain.Restore(frame.Id, frame.Rolls, frame.BonusPoints, frame.IsLastFrame);
+    }
 }

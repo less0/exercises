@@ -8,6 +8,7 @@ public class Frame : Entity
 
     public static Frame CreateFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll);
     public static Frame CreateLastFrame(int pinsWithFirstRoll) => new(pinsWithFirstRoll, true);
+    public static Frame Restore(Guid id, int[] rolls, int bonusPoints, bool isLastFrame) => new(id, rolls, bonusPoints, isLastFrame);
 
     private Frame(int pinsWithFirstRoll, bool isLastFrame = false)
     {
@@ -17,6 +18,14 @@ public class Frame : Entity
         }
         
         _rolls = new() { pinsWithFirstRoll };
+        _isLastFrame = isLastFrame;
+    }
+
+    private Frame(Guid id, int[] rolls, int bonusPoints, bool isLastFrame)
+        : base(id)
+    {
+        _rolls = new(rolls);
+        _bonusPoints = bonusPoints;
         _isLastFrame = isLastFrame;
     }
 

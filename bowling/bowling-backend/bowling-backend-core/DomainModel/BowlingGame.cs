@@ -17,10 +17,22 @@ public class BowlingGame : Entity, IAggregateRoot
         return new(players);
     }
 
+    public static BowlingGame Restore(Guid id, string[] players, List<Frame>[] frames)
+    {
+        return new(id, players, frames);
+    }
+
     private BowlingGame(string[] players)
     {
         PlayerNames = players;
         Init();
+    }
+
+    private BowlingGame(Guid id, string[] players, List<Frame>[] frames) 
+        : base(id)
+    {
+        PlayerNames = players;
+        _frames = frames;
     }
 
     [MemberNotNull(nameof(_frames))]

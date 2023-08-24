@@ -1,11 +1,10 @@
 using bowling_backend_persistence.DataModel;
 using FluentAssertions;
-using Microsoft.Extensions.Logging;
 using BowlingGameDomain = bowling_backend_core.DomainModel.BowlingGame;
 
 namespace bowling_backend_persistence_tests.DataModel;
 
-public class BowlingGameMapperTests
+public partial class BowlingGameMapperTests
 {
     [Fact]
     public void Map_NewGameIsMappedCorrectly()
@@ -31,7 +30,7 @@ public class BowlingGameMapperTests
 
         var mappedGame = mapper.Map(game);
 
-        mappedGame.PlayerNames.Should().BeEquivalentTo(playerNames);
+        mappedGame.PlayerNames.Should().BeEquivalentTo(playerNames, o => o.WithStrictOrdering());
     }
 
     [Fact]
