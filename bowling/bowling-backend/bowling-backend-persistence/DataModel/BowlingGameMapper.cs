@@ -17,10 +17,8 @@ public class BowlingGameMapper
     }
 
     private static List<Frame> MapFrames(BowlingGameDomain game)
-    {
-        return game.Frames.SelectMany((frames, playerIndex) => frames.Select(f => MapFrame(f, playerIndex)))
-                          .ToList();
-    }
+        => game.Frames.SelectMany((frames, playerIndex) => frames.Select(f => MapFrame(f, playerIndex)))
+                      .ToList();
 
     private static Frame MapFrame(FrameDomain frame, int playerIndex)
     {

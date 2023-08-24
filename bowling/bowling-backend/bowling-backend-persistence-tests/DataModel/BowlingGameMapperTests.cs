@@ -1,6 +1,6 @@
 using bowling_backend_persistence.DataModel;
 using FluentAssertions;
-
+using Microsoft.Extensions.Logging;
 using BowlingGameDomain = bowling_backend_core.DomainModel.BowlingGame;
 
 namespace bowling_backend_persistence_tests.DataModel;
@@ -13,7 +13,7 @@ public class BowlingGameMapperTests
         BowlingGameMapper mapper = new();
 
         var game = BowlingGameDomain.StartNew(new[] { "Player" });
-        
+
         var mappedGame = mapper.Map(game);
 
         mappedGame.Id.Should().Be(game.Id);
@@ -38,26 +38,88 @@ public class BowlingGameMapperTests
     public void Map_NewGame_UserIdIsEmpty()
     {
         BowlingGameMapper mapper = new();
-        var game = BowlingGameDomain.StartNew(new[] {"Player"});
+        var game = BowlingGameDomain.StartNew(new[] { "Player" });
 
         var mappedGame = mapper.Map(game);
 
         mappedGame.UserId.Should().BeEmpty();
     }
 
-    [Fact]
-    public void Map_FramesAreAddedWithCorrectIndices()
+    [Theory]
+    [InlineData(3, 0, 0)]
+    [InlineData(3, 1, 1)]
+    [InlineData(40, 9, 0)]
+    [InlineData(40, 10, 1)]
+    [InlineData(40, 19, 1)]
+    public void Map_TwoPlayers_FramesAreAddedWithCorrectPlayerIndices(int numberOfRolls, int frameIndex, int expectedPlayerIndex)
     {
         BowlingGameMapper mapper = new();
-        var game = BowlingGameDomain.StartNew(new[] {"Player 1", "Player 2"});
-        game.AddRoll(0);
-        game.AddRoll(0);
-        game.AddRoll(0);
+        var game = BowlingGameDomain.StartNew(new[] { "Player 1", "Player 2" });
+
+        for (int i = 0; i < numberOfRolls; i++)
+        {
+            game.AddRoll(0);
+        }
+
+        var mappedGame = mapper.Map(game);
+
+        mappedGame.Frames[frameIndex].PlayerIndex.Should().Be(expectedPlayerIndex);
+    }
+
+    [Theory]
+    [InlineData(7, 0, 0)]
+    [InlineData(7, 1, 1)]
+    [InlineData(7, 2, 2)]
+    [InlineData(7, 3, 3)]
+    [InlineData(15, 0, 0)]
+    [InlineData(15, 1, 0)]
+    [InlineData(15, 6, 3)]
+    [InlineData(15, 7, 3)]
+    [InlineData(80, 9, 0)]
+    [InlineData(80, 10, 1)]
+    [InlineData(80, 19, 1)]
+    [InlineData(80, 20, 2)]
+    [InlineData(80, 29, 2)]
+    [InlineData(80, 30, 3)]
+    public void Map_FourPlayers_FramesAreAddedWithCorrectPlayerIndices(int numberOfRolls, int frameIndex, int expectedPlayerIndex)
+    {
+        BowlingGameMapper mapper = new();
+        var game = BowlingGameDomain.StartNew(new[] { "Player 1", "Player 2", "Player 3", "Player 4" });
+
+        for (int i = 0; i < numberOfRolls; i++)
+        {
+            game.AddRoll(0);
+        }
+
+        var mappedGame = mapper.Map(game);
+
+        mappedGame.Frames[frameIndex].PlayerIndex.Should().Be(expectedPlayerIndex);
+    }
+
+    [Theory]
+    [InlineData(0, 1, 1)]
+    [InlineData(0, 9, 9)]
+    [InlineData(1, 0, 10)]
+    [InlineData(1, 1, 11)]
+    [InlineData(1, 9, 19)]
+    [InlineData(2, 0, 20)]
+    [InlineData(2, 4, 24)]
+    [InlineData(2, 9, 29)]
+    [InlineData(3, 0, 30)]
+    [InlineData(3, 3, 33)]
+    [InlineData(3, 9, 39)]
+    public void Map_CorrectFramesAreMapped(int playerIndex, int frameIndex, int mappedFrameIndex)
+    {
+        BowlingGameMapper mapper = new();
+        var game = BowlingGameDomain.StartNew(new[] { "Player 1", "Player 2", "Player 3", "Player 4"});
+
+        for (int i = 0; i < 80; i++)
+        {
+            game.AddRoll(0);
+        }
         
         var mappedGame = mapper.Map(game);
 
-        mappedGame.Frames.Should().HaveCount(2);
-        mappedGame.Frames[0].PlayerIndex.Should().Be(0);
-        mappedGame.Frames[1].PlayerIndex.Should().Be(1);
+        mappedGame.Frames[mappedFrameIndex].Id.Should().Be(game.Frames[playerIndex][frameIndex].Id);
     }
 }
