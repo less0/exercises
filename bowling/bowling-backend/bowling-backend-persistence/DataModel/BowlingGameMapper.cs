@@ -40,6 +40,10 @@ public class BowlingGameMapper
     private List<FrameDomain>[] ReverseMapFrames(List<Frame> frames, int numberOfPlayers)
     {
         var result = new List<FrameDomain>[numberOfPlayers];
+        for (int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++)
+        {
+            result[playerIndex] = new();
+        }
 
         var groupedByPlayerIndex = frames.GroupBy(f => f.PlayerIndex)
                                          .OrderBy(g => g.Key);

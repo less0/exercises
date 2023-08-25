@@ -156,6 +156,24 @@ public partial class BowlingGameMapperTests
         mappedGame.Frames[0][2].Score.Should().Be(6);
     }
 
+    [Fact]
+    public void ReverseMap_FrameListsAreNotNullIfThereAreNoFrames()
+    {
+        BowlingGameMapper mapper = new();
+        
+        BowlingGame game = new()
+        {
+            Id = Guid.NewGuid(),
+            PlayerNames = new[] { "Player 1", "Player 2" },
+            Frames = new(),
+            UserId = string.Empty
+        };
+
+        var mappedGame = mapper.ReverseMap(game);
+        mappedGame.Frames[0].Should().NotBeNull();
+        mappedGame.Frames[1].Should().NotBeNull();
+    }
+
     private List<Frame> GenerateFramesForFullGame(int numberOfPlayers)
     {
         var result = new List<Frame>();
