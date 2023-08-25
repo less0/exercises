@@ -2,43 +2,34 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using bowling_backend_api.Model;
+using bowling_backend_applicaton.Interfaces;
+using System.Collections.ObjectModel;
+using System.Security.Claims;
 
 namespace bowling_backend_api.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class GamesController : Controller
 {
+    private readonly IBowlingCommands _commands;
+    private readonly IBowlingQueries _queries;
+
+    public GamesController(IBowlingCommands commands, IBowlingQueries queries)
+    {
+        _commands = commands;
+        _queries = queries;
+    }
+
+    private string UserId => User.FindFirstValue("sub");
+
     [HttpGet("/games")]
     public IActionResult Games()
     {
-        List<GameSummary> allGames = new()
-        {
-            new()
-            {
-                Id = Guid.NewGuid().ToString(),
-                IsInProgress = false,
-                StartedAt = DateTime.Now.AddDays(-2),
-                NumberOfPlayers = 3
-            },
-            new()
-            {
-                Id = Guid.NewGuid().ToString(),
-                StartedAt = DateTime.Now.AddDays(-1),
-                NumberOfPlayers = 4,
-                IsInProgress = false,
-            },
-            new() 
-            {
-                Id = Guid.NewGuid().ToString(),
-                StartedAt = DateTime.Now.AddHours(-1),
-                NumberOfPlayers = 4,
-                IsInProgress = Random.Shared.Next() % 2 == 0
-            }
-        };
+        var games = _queries.GetAllGames(UserId);
 
-        GamesSummaries games = new()
+        GamesSummaries result = new()
         {
-            Games = new(allGames)
+            Games = new ReadOnlyCollection<GameSummary>(games.Select(g => (GameSummary)g).ToList())
         };
 
         return Ok(games);
@@ -47,33 +38,21 @@ public class GamesController : Controller
     [HttpGet("/games/{id}")]
     public IActionResult GetGame(string id)
     {
-        GameDetails details = new()
-        {
-            Id = id,
-            Players = new List<string> { "Peter", "Paul", "Mary" },
-            StartedAt = DateTime.Now.AddHours(-1),
-            IsInProgress = true,
-            Frames = new Frame[3][]
-            {
-                new Frame[]{ new Frame(){Rolls = new int[]{1,2}, TotalScore = 3}, new Frame(){Rolls = new int[]{10}, TotalScore = 10} },
-                new Frame[]{ new Frame(){Rolls = new int[]{10}, TotalScore = 10}, new Frame(){Rolls = new int[]{9,0}, BonusPoints = 9, TotalScore = 19} },
-                new Frame[]{ new Frame(){ Rolls = new int[]{0,3}, TotalScore = 3}, new Frame(){Rolls = new int[]{2, 8}, TotalScore = 10}},
-            }
-        };
-        return Ok(details);
+        var game = _queries.GetGameById(UserId, Guid.Parse(id));
+        return Ok((GameDetails)game);
     }
 
     [HttpPost("/games/{id}/roll")]
     public IActionResult AddRoll(string id, [FromBody] Roll roll)
     {
-        Console.WriteLine($"{roll.Pins} Pins rolled for {id}");
+        _commands.Roll(UserId, Guid.Parse(id), roll.Pins);
         return Ok();
     }
 
     [HttpPost("/games/start")]
     public IActionResult StartGame([FromBody] string[] playerNames)
     {
-        Console.WriteLine($"Starting game with {string.Join(", ", playerNames)}");
+        _commands.StartGame(UserId, playerNames);
         return Ok();
     }
 }

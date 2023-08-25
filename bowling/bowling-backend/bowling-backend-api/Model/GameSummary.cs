@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using bowling_backend_applicaton;
 
 namespace bowling_backend_api.Model;
 
@@ -11,6 +12,17 @@ public class GameSummary
     public int NumberOfPlayers { get; init; }
 
     public bool IsInProgress { get; init; }
+
+    public static explicit operator GameSummary(BowlingGameDto dto)
+    {
+        return new GameSummary()
+        {
+            Id = dto.Id.ToString(),
+            StartedAt = dto.StartedAt,
+            NumberOfPlayers = dto.PlayerNames.Length,
+            IsInProgress = dto.IsInProgress
+        };
+    }
 
     /// <summary>
     /// This property returns the links to implement HATEOAS for the /games endpoint. Clients
