@@ -7,14 +7,14 @@ namespace bowling_backend_tests.DomainModel;
 public partial class FrameTests
 {
     [Fact]
-    public void StartFrame_IdShouldNotBeEmpty()
+    public void CreateFrame_IdShouldNotBeEmpty()
     {
         var frame = Frame.CreateFrame(0);
         frame.Id.Should().NotBeEmpty();
     }  
 
     [Fact]
-    public void StartFrame_RollsAreInitializedCorrectly()
+    public void CreateFrame_RollsAreInitializedCorrectly()
     {
         var pins = Random.Shared.Next(0, 11);
 
@@ -25,9 +25,24 @@ public partial class FrameTests
     }
 
     [Fact]
-    public void FirstFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    public void CreateFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
     {
         var exception = Record.Exception(() => Frame.CreateFrame(11));
+        exception.Should().BeOfType<ArgumentException>();
+    }
+
+    [Fact]
+    public void AddRoll_NegativePins_ThrowsArgumentException()
+    {
+        var frame = Frame.CreateFrame(1);
+        var exception = Record.Exception(() => frame.AddRoll(-1));
+        exception.Should().BeOfType<ArgumentException>();
+    }
+
+    [Fact]
+    public void CreateFrame_NegativePins_ThrowsArgumentException()
+    {
+        var exception = Record.Exception(() => Frame.CreateFrame(-1));
         exception.Should().BeOfType<ArgumentException>();
     }
 
@@ -78,7 +93,7 @@ public partial class FrameTests
     }
 
     [Fact]
-    public void AddRoll_IsFirstFrame_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
+    public void AddRoll_ExceedsMaximumPinsPerRoll_ThrowsArgumentException()
     {
         var frame = Frame.CreateFrame(0);
         var exception = Record.Exception(() => frame.AddRoll(11));

@@ -2,7 +2,7 @@ namespace bowling_backend_core.DomainModel;
 
 public class Frame : Entity
 {
-    private readonly List<int> _rolls;
+    private readonly List<int> _rolls = new();
     private readonly bool _isLastFrame;
     private int _bonusPoints;
 
@@ -12,12 +12,8 @@ public class Frame : Entity
 
     private Frame(int pinsWithFirstRoll, bool isLastFrame = false)
     {
-        if(ExceedsMaximumPinsPerRoll(pinsWithFirstRoll))
-        {
-            throw new ArgumentException(string.Empty, nameof(pinsWithFirstRoll));
-        }
-        
-        _rolls = new() { pinsWithFirstRoll };
+        ThrowIfInvalidRoll(pinsWithFirstRoll);
+        _rolls.Add(pinsWithFirstRoll);
         _isLastFrame = isLastFrame;
     }
 
@@ -84,6 +80,11 @@ public class Frame : Entity
             throw new InvalidOperationException();
         }
 
+        if(pins < 0)
+        {
+            throw new ArgumentException("Number of pins may not be null.", nameof(pins));
+        }
+
         if (ExceedsMaximumPinsPerRoll(pins))
         {
             throw new ArgumentException(string.Empty, nameof(pins));
@@ -99,5 +100,5 @@ public class Frame : Entity
 
     private bool ExceedsMaximumPinsPerFrame(int pins) => !IsLastFrame && ExceedsMaximumPinsForNonLastFrame(pins);
 
-    private bool ExceedsMaximumPinsForNonLastFrame(int pins) => _rolls[0] + pins > 10;
+    private bool ExceedsMaximumPinsForNonLastFrame(int pins) => _rolls.Any() ? _rolls[0] + pins > 10 : pins > 10;
 }
