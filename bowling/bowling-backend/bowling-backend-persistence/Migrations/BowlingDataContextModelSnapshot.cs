@@ -40,7 +40,7 @@ namespace bowling_backend_persistence.Migrations
 
                     b.HasIndex("Id", "UserId");
 
-                    b.ToTable("BowlingGame");
+                    b.ToTable("BowlingGame", (string)null);
                 });
 
             modelBuilder.Entity("bowling_backend_persistence.DataModel.Frame", b =>
@@ -69,7 +69,7 @@ namespace bowling_backend_persistence.Migrations
 
                     b.HasIndex("BowlingGameId");
 
-                    b.ToTable("Frame");
+                    b.ToTable("Frame", (string)null);
                 });
 
             modelBuilder.Entity("bowling_backend_persistence.DataModel.Frame", b =>
