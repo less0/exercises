@@ -5,6 +5,8 @@ public class Frame
     public Guid Id { get; set; }
 
     public int PlayerIndex { get; set; }
+    
+    public int FrameIndex { get; set; }
 
     public int[] Rolls { get; set; }
 

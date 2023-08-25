@@ -56,6 +56,7 @@ public class GameDetails
         for (int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++)
         {
             var numberOfFrames = frames[playerIndex].Length;
+            result[playerIndex] = new Frame[numberOfFrames];
 
             for (int frameIndex = 0; frameIndex < numberOfFrames; frameIndex++)
             {

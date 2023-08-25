@@ -17,15 +17,16 @@ public class BowlingGameMapper
     }
 
     private static List<Frame> MapFrames(BowlingGameDomain game)
-        => game.Frames.SelectMany((frames, playerIndex) => frames.Select(f => MapFrame(f, playerIndex)))
+        => game.Frames.SelectMany((frames, playerIndex) => frames.Select((f, frameIndex) => MapFrame(f, playerIndex, frameIndex)))
                       .ToList();
 
-    private static Frame MapFrame(FrameDomain frame, int playerIndex)
+    private static Frame MapFrame(FrameDomain frame, int playerIndex, int frameIndex)
     {
         return new Frame
         {
             Id = frame.Id,
             PlayerIndex = playerIndex,
+            FrameIndex = frameIndex,
             BonusPoints = frame.BonusPoints,
             Rolls = frame.Rolls,
             IsLastFrame = frame.IsLastFrame
@@ -50,7 +51,8 @@ public class BowlingGameMapper
 
         foreach(var framesGroup in groupedByPlayerIndex)
         {
-            result[framesGroup.Key] = framesGroup.Select(ReverseMapFrame)
+            result[framesGroup.Key] = framesGroup.OrderBy(f => f.FrameIndex)
+                                                 .Select(ReverseMapFrame)
                                                  .ToList();
         }
 

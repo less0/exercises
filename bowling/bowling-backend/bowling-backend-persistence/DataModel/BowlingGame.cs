@@ -6,7 +6,7 @@ public class BowlingGame
 
     public string UserId { get; set; }
 
-    public string[] PlayerNames { get; set; }
+    public string[] PlayerNames { get; set; } = Array.Empty<string>();
 
-    public List<Frame> Frames { get; set; }
+    public List<Frame> Frames { get; set; } = new();
 }

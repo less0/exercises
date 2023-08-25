@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\bowling-backend-application\bowling-backend-application.csproj" />
     <ProjectReference Include="..\bowling-backend-core\bowling-backend-core.csproj" />
     <ProjectReference Include="..\bowling-backend-persistence\bowling-backend-persistence.csproj" />

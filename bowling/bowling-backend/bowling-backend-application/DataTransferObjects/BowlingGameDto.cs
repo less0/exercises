@@ -42,7 +42,7 @@ public class BowlingGameDto
                 var mappedFrame = (FrameDto)frame;
                 mappedFrame.CumulativeScore = cumulativeScore;
 
-                result[playerIndex][frameIndex] = (FrameDto)frames[playerIndex][frameIndex];
+                result[playerIndex][frameIndex] = mappedFrame;
             }
         }
 

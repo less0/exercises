@@ -28,11 +28,11 @@ public class BowlingGameRepository : IRepository<BowlingGame>
         }
         else
         {
+            UpdateFrames(gameData);
+
             _dataContext.Entry(existingGame).State = EntityState.Detached;
             _dataContext.Attach(gameData);
             _dataContext.Entry(gameData).State = EntityState.Modified;
-
-            UpdateFrames(gameData);
         }
 
         _dataContext.SaveChanges();
@@ -40,6 +40,7 @@ public class BowlingGameRepository : IRepository<BowlingGame>
 
     public BowlingGame[] GetAllByUserId(string userId) => _dataContext.Set<DataModel.BowlingGame>()
                                                                       .Where(g => g.UserId == userId)
+                                                                      .Include(g => g.Frames)
                                                                       .Select(_mapper.ReverseMap)
                                                                       .ToArray();
 
@@ -47,6 +48,7 @@ public class BowlingGameRepository : IRepository<BowlingGame>
     {
         var gameData = _dataContext.Set<DataModel.BowlingGame>()
                                    .Where(g => g.Id == gameId && g.UserId == userId)
+                                   .Include(g => g.Frames)
                                    .SingleOrDefault();
         return _mapper.ReverseMap(gameData);
     }

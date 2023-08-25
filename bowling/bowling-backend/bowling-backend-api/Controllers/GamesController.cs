@@ -32,7 +32,7 @@ public class GamesController : Controller
             Games = new ReadOnlyCollection<GameSummary>(games.Select(g => (GameSummary)g).ToList())
         };
 
-        return Ok(games);
+        return Ok(result);
     }
 
     [HttpGet("/games/{id}")]
