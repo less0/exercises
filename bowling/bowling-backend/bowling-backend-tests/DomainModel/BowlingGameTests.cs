@@ -24,7 +24,7 @@ public partial class BowlingGameTests
     public void StartNew_PlayerNamesAreSet(params string[] playerNames)
     {
         var game = BowlingGame.StartNew(playerNames);
-        game.PlayerNames.Should().BeEquivalentTo(playerNames);
+        game.PlayerNames.Should().BeEquivalentTo(playerNames, o => o.WithStrictOrdering());
     }
 
     [Fact]
