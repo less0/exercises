@@ -6,7 +6,8 @@
                 <h2 ngbAccordionHeader><button ngbAccordionButton>Match info</button></h2>
                 <div ngbAccordionCollapse>
                     <div ngbAccordionBody>
-                        <div><label class="fw-semibold">Started at:</label> {{gameDetails.startedAt | date: "medium"}}</div>
+                        <div><label class="fw-semibold">Started at:</label> {{gameDetails.startedAt | date: "medium"}}
+                        </div>
                         <div><label class="fw-semibold">In progress:</label> {{gameDetails.isInProgress}}</div>
                     </div>
                 </div>
@@ -31,13 +32,11 @@
                 <h2 ngbAccordionHeader><button ngbAccordionButton>Add roll</button></h2>
                 <div ngbAccordionCollapse>
                     <div ngbAccordionBody>
-                        <form>
-                            <div class="mb-3">
-                              <label for="exampleInputEmail1" class="form-label">Pins rolled</label>
-                              <input type="number" class="form-control" [value]="pinsRolled" id="exampleInputEmail1">
-                            </div>
-                            <button type="button" class="btn btn-primary" (click)="roll()">Submit</button>
-                          </form>
+                        <div class="mb-3">
+                            <label for="pinsRolled" class="form-label">Pins rolled ({{gameDetails.currentPlayer}})</label>
+                            <input type="number" class="form-control" [(ngModel)]="pinsRolled" id="pinsRolled">
+                        </div>
+                        <button type="button" class="btn btn-primary" (click)="roll()">Submit</button>
                     </div>
                 </div>
             </div>

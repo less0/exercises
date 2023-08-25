@@ -14,13 +14,9 @@ export class FrameComponent {
     if(this.frame.rolls!.length > 0)
     {
       var roll = this.frame.rolls![0];
-      
-      if(roll < 10)
-      {
-        return roll.toString();
-      }
-      return "X";
+      return roll == 10 ? "X" : roll.toString();
     }
+
     return "";
   }
 
@@ -36,9 +32,25 @@ export class FrameComponent {
         return "/";
       }
 
-      return secondRoll.toString();
+      return secondRoll == 10 ? "X" : secondRoll.toString();
     }
 
     return "";
+  }
+
+  public hasThreeRolls() : boolean
+  {
+    return this.frame.rolls!.length == 3;
+  }
+
+  public thirdRoll() : string | undefined
+  {
+    if(this.hasThreeRolls())
+    {
+      var roll = this.frame.rolls![2];
+      return roll == 10 ? "X" : roll.toString();
+    }
+
+    return undefined;
   }
 }

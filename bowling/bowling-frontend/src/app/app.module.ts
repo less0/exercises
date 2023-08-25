@@ -24,7 +24,7 @@ import { PlayersInfoComponent } from './players-info/players-info.component';
 import { LoginMessageComponent } from './login-message/login-message.component';
 import { WelcomeMessageComponent } from './welcome-message/welcome-message.component';
 import { AddGameComponent } from './add-game/add-game.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -47,6 +47,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     AuthModule.forRoot(
       {
         domain: auth0Configuration.domain,

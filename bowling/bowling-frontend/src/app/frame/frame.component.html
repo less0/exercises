@@ -3,9 +3,10 @@
         <tr>
             <td class="text-center col-md-1">{{firstRoll()}}</td>
             <td class="text-center col-md-1">{{secondRoll()}}</td>
+            <td *ngIf="hasThreeRolls()" class="text-center col-md-1">{{thirdRoll()}}</td>
         </tr>
         <tr>
-            <td colspan="2" class="text-center">{{frame.totalScore}}</td>
+            <td [attr.colspan]="hasThreeRolls() ? 3 : 2" class="text-center">{{frame.totalScore}}</td>
         </tr>
     </tbody>
 </table>
