@@ -1,19 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
-using bowling_backend_applicaton;
-using bowling_backend_applicaton.Interfaces;
-using bowling_backend_core.DomainModel;
-using bowling_backend_persistence;
+using bowling_backend_api;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);
-
-builder.Services.AddControllers();
-builder.Services.AddScoped<BowlingDataContext>();
-builder.Services.AddScoped<IRepository<BowlingGame>, BowlingGameRepository>();
-builder.Services.AddScoped<IBowlingCommands, BowlingCommands>();
-builder.Services.AddScoped<IBowlingQueries, BowlingQueries>();
+await builder.AddPersistence();
 
 // Add any origin for CORS. DON'T use this in any real world szenario, unless you really know 
 // what you're doing.
