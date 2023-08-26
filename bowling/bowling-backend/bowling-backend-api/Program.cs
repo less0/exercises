@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.local.json", optional: true);
-await builder.AddPersistence();
+builder.AddPersistence();
 
 // Add any origin for CORS. DON'T use this in any real world szenario, unless you really know 
 // what you're doing.
@@ -20,6 +20,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
     });
 
 var app = builder.Build();
+
+await app.MigrateDatabase();
 
 app.UseCors();
 app.UseAuthentication();
