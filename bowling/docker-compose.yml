@@ -6,4 +6,12 @@ services:
   backend:
     build: ./bowling-backend
     ports:
-      - 80
+      - 60080:80
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=wmY@44rM8?y*
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - 4433:1433
