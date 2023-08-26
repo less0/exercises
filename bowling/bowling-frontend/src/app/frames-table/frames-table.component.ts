@@ -8,4 +8,5 @@ import { Frame } from '../model/frame';
 })
 export class FramesTableComponent {
   @Input() frames! : Frame[][];
+  @Input() players! : string[];
 }

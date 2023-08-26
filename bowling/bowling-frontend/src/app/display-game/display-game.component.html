@@ -24,7 +24,7 @@
                 <h2 ngbAccordionHeader><button ngbAccordionButton>Frames</button></h2>
                 <div ngbAccordionCollapse>
                     <div ngbAccordionBody>
-                        <app-frames-table [frames]="gameDetails.frames!"></app-frames-table>
+                        <app-frames-table [frames]="gameDetails.frames!" [players]="gameDetails.players!"></app-frames-table>
                     </div>
                 </div>
             </div>
