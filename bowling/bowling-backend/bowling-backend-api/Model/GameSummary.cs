@@ -13,6 +13,8 @@ public class GameSummary
 
     public bool IsInProgress { get; init; }
 
+    public string[] WinnerNames { get; init; }
+
     public static explicit operator GameSummary(BowlingGameDto dto)
     {
         return new GameSummary()
@@ -20,7 +22,8 @@ public class GameSummary
             Id = dto.Id.ToString(),
             StartedAt = dto.StartedAt,
             NumberOfPlayers = dto.PlayerNames.Length,
-            IsInProgress = dto.IsInProgress
+            IsInProgress = dto.IsInProgress,
+            WinnerNames = dto.WinnerNames
         };
     }
 
@@ -39,4 +42,5 @@ public class GameSummary
             return new(result);
         }
     }
+
 }

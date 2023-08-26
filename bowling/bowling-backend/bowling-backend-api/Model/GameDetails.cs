@@ -17,12 +17,15 @@ public class GameDetails
 
     public bool IsInProgress { get; init; }
 
+    public string[] WinnerNames { get; init; }
+
     public static explicit operator GameDetails(BowlingGameDto dto)
     {
         return new()
         {
             Id = dto.Id.ToString(),
             Players = dto.PlayerNames.ToList(),
+            WinnerNames = dto.WinnerNames,
             CurrentPlayer = dto.CurrentPlayer,
             StartedAt = dto.StartedAt,
             Frames = MapFrames(dto.Frames),
@@ -47,6 +50,7 @@ public class GameDetails
             return new(result);
         }
     }
+
 
     private static Frame[][] MapFrames(FrameDto[][] frames)
     {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using bowling_backend_core.DomainModel;
 using FluentAssertions;
 
@@ -250,6 +251,88 @@ public partial class BowlingGameTests
         game.AddRoll(3);
 
         game.IsFinished.Should().BeTrue();
+    }
+
+    [Theory]
+    [MemberData(nameof(GetPlayersCombinations))]
+    public void WinnerName_LastPlayer(params string[] players)
+    {
+        var game = BowlingGame.StartNew(players);
+
+        RollAllFramesButLast(game);
+
+        game.AddRoll(Strike);
+        game.AddRoll(Strike);
+        game.AddRoll(3);
+
+        game.WinnerNames.Should().BeEquivalentTo(new[] { players.Last() });
+    }
+
+    [Fact]
+    public void WinnerNames_GameIsNotFinished_IsEmpty()
+    {
+        var game = BowlingGame.StartNew(ThreePlayers);
+        RollAllFramesButLast(game);
+        game.WinnerNames.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void WinnerNames_SecondToLast()
+    {
+        var game = BowlingGame.StartNew(ThreePlayers);
+        AddNRolls(game, 20 + 18 + 18);
+        RollRandomFrame(game);
+        RollNullFrame(game);
+
+        game.WinnerNames.Should().BeEquivalentTo(new[] { ThreePlayers[^2] });
+    }
+
+    [Fact]
+    public void WinnerNames_First()
+    {
+        var game = BowlingGame.StartNew(ThreePlayers);
+        AddNRolls(game, 3 * 18);
+        RollRandomFrame(game);
+        RollNullFrame(game);
+        RollNullFrame(game);
+
+        game.WinnerNames.Should().BeEquivalentTo(new[] { ThreePlayers[0] });
+    }
+
+    [Fact]
+    public void WinnerNames_Multiple()
+    {
+        var game = BowlingGame.StartNew(ThreePlayers);
+        AddNRolls(game, 3 * 18);
+        RollFrame(game, sum: 9);
+        RollNullFrame(game);
+        RollFrame(game, sum: 9);
+
+        game.WinnerNames.Should().BeEquivalentTo(new[] {ThreePlayers[0], ThreePlayers[2]});
+    }
+
+    private void RollNullFrame(BowlingGame game)
+    {
+        game.AddRoll(0);
+        game.AddRoll(0);
+    }
+
+    private void RollFrame(BowlingGame game, int sum)
+    {
+        var firstRoll = Random.Shared.Next(sum + 1);
+        var secondRoll = sum - firstRoll;
+
+        game.AddRoll(firstRoll);
+        game.AddRoll(secondRoll);
+    }
+
+    private void RollRandomFrame(BowlingGame game)
+    {
+        var firstRoll = Random.Shared.Next(10);
+        var secondRoll = Random.Shared.Next(10 - firstRoll);
+
+        game.AddRoll(firstRoll);
+        game.AddRoll(secondRoll);
     }
 
     private static void RollAllFrames(BowlingGame game)

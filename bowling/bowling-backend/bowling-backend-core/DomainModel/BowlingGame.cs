@@ -9,7 +9,7 @@ public class BowlingGame : Entity, IAggregateRoot
 
     public static BowlingGame StartNew(string[] players)
     {
-        if(players.Length == 0)
+        if (players.Length == 0)
         {
             throw new ArgumentException("Cannot start a game without players.", nameof(players));
         }
@@ -28,7 +28,7 @@ public class BowlingGame : Entity, IAggregateRoot
         Init();
     }
 
-    private BowlingGame(Guid id, string[] players, List<Frame>[] frames) 
+    private BowlingGame(Guid id, string[] players, List<Frame>[] frames)
         : base(id)
     {
         PlayerNames = players;
@@ -39,19 +39,21 @@ public class BowlingGame : Entity, IAggregateRoot
     private void Init()
     {
         _frames = new List<Frame>[PlayerNames.Length];
-        for(int i = 0; i<_frames.Length; i++)
+        for (int i = 0; i < _frames.Length; i++)
         {
             _frames[i] = new();
         }
     }
 
     public string[] PlayerNames { get; private set; }
-    public Frame[][] Frames {
-        get{
+    public Frame[][] Frames
+    {
+        get
+        {
             return _frames.Select(l => l.ToArray()).ToArray();
         }
     }
-    public bool IsFinished 
+    public bool IsFinished
     {
         get
         {
@@ -60,11 +62,28 @@ public class BowlingGame : Entity, IAggregateRoot
         }
     }
 
+    public string[] WinnerNames
+    {
+        get
+        {
+            if (!IsFinished)
+            {
+                return Array.Empty<string>();
+            }
+
+            var playerSums = _frames.Select((frames, playerIndex) => new { playerIndex, Sum = frames.Sum(f => f.Score) });
+            var maximumSum = playerSums.Max(s => s.Sum);
+            return playerSums.Where(s => s.Sum == maximumSum)
+                             .Select(s => PlayerNames[s.playerIndex])
+                             .ToArray();
+        }
+    }
+
     public string CurrentPlayer => IsFinished ? string.Empty : PlayerNames[GetCurrentPlayerIndex()];
 
     public void AddRoll(int numberOfPins)
     {
-        if(IsFinished)
+        if (IsFinished)
         {
             throw new InvalidOperationException();
         }
@@ -72,15 +91,15 @@ public class BowlingGame : Entity, IAggregateRoot
         var playerIndex = GetCurrentPlayerIndex();
         var frames = _frames[playerIndex];
 
-        if(!frames.Any())
+        if (!frames.Any())
         {
             frames.Add(Frame.CreateFrame(numberOfPins));
         }
-        else if(frames[^1].IsFinished && frames.Count < 9)
+        else if (frames[^1].IsFinished && frames.Count < 9)
         {
             frames.Add(Frame.CreateFrame(numberOfPins));
         }
-        else if(frames[^1].IsFinished && frames.Count == 9)
+        else if (frames[^1].IsFinished && frames.Count == 9)
         {
             frames.Add(Frame.CreateLastFrame(numberOfPins));
         }
@@ -89,20 +108,20 @@ public class BowlingGame : Entity, IAggregateRoot
             frames[^1].AddRoll(numberOfPins);
         }
 
-        if(frames.Count >= 2 && frames[^1].IsFinished)
+        if (frames.Count >= 2 && frames[^1].IsFinished)
         {
             frames[^2].AddBonusPoints(frames.Last());
         }
     }
 
-    private int GetCurrentPlayerIndex() 
+    private int GetCurrentPlayerIndex()
     {
-        if(PlayerNames.Length == 1)
+        if (PlayerNames.Length == 1)
         {
             return 0;
         }
 
-        if(TryGetActiveFramePlayerIndex(out int playerIndex))
+        if (TryGetActiveFramePlayerIndex(out int playerIndex))
         {
             return playerIndex;
         }
@@ -113,19 +132,19 @@ public class BowlingGame : Entity, IAggregateRoot
     private bool TryGetActiveFramePlayerIndex(out int playerIndex)
     {
         var activeFramePlayerIndex = _frames
-            .Select((frames, index) => new{index, isActive=frames.Any(frame => !frame.IsFinished)})
+            .Select((frames, index) => new { index, isActive = frames.Any(frame => !frame.IsFinished) })
             .Where(x => x.isActive)
             .Select(x => x.index)
             .DefaultIfEmpty(-1)
             .FirstOrDefault();
-        
+
         playerIndex = activeFramePlayerIndex;
-        return playerIndex >= 0;        
+        return playerIndex >= 0;
     }
 
     private int GetNextPlayerIndex()
     {
-        if(AllFrameListsHaveSameLength())
+        if (AllFrameListsHaveSameLength())
         {
             return 0;
         }
@@ -142,7 +161,7 @@ public class BowlingGame : Entity, IAggregateRoot
 
     private int GetLastPlayerIndexWithMoreFrames()
     {
-        return _frames.Select((frames, index) => new{index, frames})
+        return _frames.Select((frames, index) => new { index, frames })
                       .OrderBy(x => x.frames.Count)
                       .ThenBy(x => x.index)
                       .Last()

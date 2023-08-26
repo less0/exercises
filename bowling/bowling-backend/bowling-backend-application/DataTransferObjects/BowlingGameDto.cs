@@ -10,6 +10,7 @@ public class BowlingGameDto
     public string CurrentPlayer { get; init; }
     public bool IsInProgress { get; init; }
     public DateTime StartedAt { get; init; }
+    public string[] WinnerNames { get; init; }
 
     public static explicit operator BowlingGameDto(BowlingGame game)
     {
@@ -17,6 +18,7 @@ public class BowlingGameDto
         {
             Id = game.Id,
             PlayerNames = game.PlayerNames,
+            WinnerNames = game.WinnerNames,
             CurrentPlayer = game.CurrentPlayer,
             IsInProgress = !game.IsFinished,
             StartedAt = DateTime.MinValue, // TODO

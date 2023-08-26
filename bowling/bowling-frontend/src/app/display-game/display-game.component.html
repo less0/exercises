@@ -6,9 +6,9 @@
                 <h2 ngbAccordionHeader><button ngbAccordionButton>Match info</button></h2>
                 <div ngbAccordionCollapse>
                     <div ngbAccordionBody>
-                        <div><label class="fw-semibold">Started at:</label> {{gameDetails.startedAt | date: "medium"}}
-                        </div>
+                        <div><label class="fw-semibold">Started at:</label> {{gameDetails.startedAt | date: "medium"}}</div>
                         <div><label class="fw-semibold">In progress:</label> {{gameDetails.isInProgress}}</div>
+                        <div><label class="fw-semibold">Winner:</label> {{gameDetails.winnerNames!.join(", ")}}</div>
                     </div>
                 </div>
             </div>
