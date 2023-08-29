@@ -9,4 +9,6 @@ public class BowlingGame
     public string[] PlayerNames { get; set; } = Array.Empty<string>();
 
     public List<Frame> Frames { get; set; } = new();
+
+    public DateTime StartedAt { get; set; }
 }

@@ -174,6 +174,31 @@ public partial class BowlingGameMapperTests
         mappedGame.Frames[1].Should().NotBeNull();
     }
 
+    [Fact]
+    public void ReverseMap_StartedAtIsMappedCorrectly()
+    {
+        BowlingGameMapper mapper = new();
+        DateTime startedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified)
+                                     .AddMinutes(Random.Shared.NextDouble() * 3600);
+
+        BowlingGame game = new()
+        {
+            Id = Guid.NewGuid(),
+            PlayerNames = new[] { "Player 1", "Player 2" },
+            Frames = new(),
+            UserId = string.Empty,
+            StartedAt = startedAt
+        };
+
+        var mappedGame = mapper.ReverseMap(game);
+        mappedGame.StartedAt.Should().Be(startedAt);
+
+        // The database stores the timestamp without any information about the kind
+        // or the timezone, thus we always use UTC time and specify the kind after 
+        // loading it.
+        mappedGame.StartedAt.Kind.Should().Be(DateTimeKind.Utc);
+    }
+
     private List<Frame> GenerateFramesForFullGame(int numberOfPlayers)
     {
         var result = new List<Frame>();

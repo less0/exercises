@@ -176,4 +176,13 @@ public partial class BowlingGameMapperTests
         mappedGame.Frames[8].IsLastFrame.Should().BeFalse();
         mappedGame.Frames[9].IsLastFrame.Should().BeTrue();
     }
+
+    [Fact]
+    public void Map_StartedAtIsMappedCorrectly()
+    {
+        BowlingGameMapper mapper = new();
+        BowlingGameDomain game = BowlingGameDomain.StartNew(new[] { "Player" });
+        var mappedGame = mapper.Map(game);
+        mappedGame.StartedAt.Should().BeCloseTo(DateTime.Now, TimeSpan.FromMilliseconds(100));
+    }
 }

@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using bowling_backend_core.DomainModel;
 using FluentAssertions;
 
@@ -292,7 +291,7 @@ public partial class BowlingGameTests
     {
         var game = BowlingGame.StartNew(ThreePlayers);
         AddNRolls(game, 3 * 18);
-        RollRandomFrame(game);
+        RollFrame(game, 9);
         RollNullFrame(game);
         RollNullFrame(game);
 
@@ -311,13 +310,20 @@ public partial class BowlingGameTests
         game.WinnerNames.Should().BeEquivalentTo(new[] {ThreePlayers[0], ThreePlayers[2]});
     }
 
-    private void RollNullFrame(BowlingGame game)
+    [Fact]
+    public void StartedAt_IsSetToUtcNow()
+    {
+        var game = BowlingGame.StartNew(OnePlayer);
+        game.StartedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromMilliseconds(100));
+    }
+
+    private static void RollNullFrame(BowlingGame game)
     {
         game.AddRoll(0);
         game.AddRoll(0);
     }
 
-    private void RollFrame(BowlingGame game, int sum)
+    private static void RollFrame(BowlingGame game, int sum)
     {
         var firstRoll = Random.Shared.Next(sum + 1);
         var secondRoll = sum - firstRoll;
@@ -326,7 +332,7 @@ public partial class BowlingGameTests
         game.AddRoll(secondRoll);
     }
 
-    private void RollRandomFrame(BowlingGame game)
+    private static void RollRandomFrame(BowlingGame game)
     {
         var firstRoll = Random.Shared.Next(10);
         var secondRoll = Random.Shared.Next(10 - firstRoll);

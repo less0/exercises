@@ -12,7 +12,8 @@ public class BowlingGameMapper
             Id = game.Id,
             PlayerNames = game.PlayerNames,
             UserId = string.Empty,
-            Frames = MapFrames(game)
+            Frames = MapFrames(game),
+            StartedAt = game.StartedAt
         };
     }
 
@@ -35,7 +36,10 @@ public class BowlingGameMapper
 
     public BowlingGameDomain ReverseMap(BowlingGame game)
     {
-        return BowlingGameDomain.Restore(game.Id, game.PlayerNames, ReverseMapFrames(game.Frames, game.PlayerNames.Length));
+        // Since SQL does stores neither the kind nor the timezone, we are always using UTC
+        // time and set the kind after loading it.
+        DateTime startedAt = DateTime.SpecifyKind(game.StartedAt, DateTimeKind.Utc);
+        return BowlingGameDomain.Restore(game.Id, game.PlayerNames, ReverseMapFrames(game.Frames, game.PlayerNames.Length), startedAt);
     }
 
     private List<FrameDomain>[] ReverseMapFrames(List<Frame> frames, int numberOfPlayers)

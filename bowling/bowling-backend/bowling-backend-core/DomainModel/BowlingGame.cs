@@ -17,22 +17,24 @@ public class BowlingGame : Entity, IAggregateRoot
         return new(players);
     }
 
-    public static BowlingGame Restore(Guid id, string[] players, List<Frame>[] frames)
+    public static BowlingGame Restore(Guid id, string[] players, List<Frame>[] frames, DateTime startedAt)
     {
-        return new(id, players, frames);
+        return new(id, players, frames, startedAt);
     }
 
     private BowlingGame(string[] players)
     {
         PlayerNames = players;
+        StartedAt = DateTime.UtcNow;
         Init();
     }
 
-    private BowlingGame(Guid id, string[] players, List<Frame>[] frames)
+    private BowlingGame(Guid id, string[] players, List<Frame>[] frames, DateTime startedAt)
         : base(id)
     {
         PlayerNames = players;
         _frames = frames;
+        StartedAt = startedAt;
     }
 
     [MemberNotNull(nameof(_frames))]
@@ -46,6 +48,7 @@ public class BowlingGame : Entity, IAggregateRoot
     }
 
     public string[] PlayerNames { get; private set; }
+    public DateTime StartedAt { get; private set; }
     public Frame[][] Frames
     {
         get

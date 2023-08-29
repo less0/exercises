@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bowling_backend_persistence;
 
@@ -11,9 +12,11 @@ using bowling_backend_persistence;
 namespace bowling_backend_persistence.Migrations
 {
     [DbContext(typeof(BowlingDataContext))]
-    partial class BowlingDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230828074556_AddedStartedAtField")]
+    partial class AddedStartedAtField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

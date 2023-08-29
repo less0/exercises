@@ -21,7 +21,7 @@ public class BowlingGameDto
             WinnerNames = game.WinnerNames,
             CurrentPlayer = game.CurrentPlayer,
             IsInProgress = !game.IsFinished,
-            StartedAt = DateTime.MinValue, // TODO
+            StartedAt = game.StartedAt,
             Frames = MapFrames(game.Frames)
         };
     }
