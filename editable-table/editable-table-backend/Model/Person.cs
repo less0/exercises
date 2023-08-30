@@ -7,7 +7,7 @@ public class Person
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string FirstName { get; init; }
     public string LastName { get; init; }
-    public string Department { get; init; }
+    public Department? Department { get; init; }
     public DateTime DateOfBirth { get; init; }
 
     public ReadOnlyDictionary<string, string> Links 
