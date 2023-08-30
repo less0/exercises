@@ -1,5 +1,29 @@
-<mat-card class="mat-elevation-z2">
-    <mat-card-content>
-        <span>Here comes the content</span>
-    </mat-card-content>
-</mat-card>
+<table mat-table class="mat-elevation-z8" *ngIf="persons != undefined" [dataSource]="persons!">
+    <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef> First Name </th>
+        <td mat-cell *matCellDef="let person"> {{person.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+        <td mat-cell *matCellDef="let person"> {{person.lastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateOfBirth">
+        <th mat-header-cell *matHeaderCellDef> Date of Birth </th>
+        <td mat-cell *matCellDef="let person"> {{person.dateOfBirth | date : "longDate"}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef> Department </th>
+        <td mat-cell *matCellDef="let person"> {{person.department.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let person"><mat-icon *ngIf="!person.isInEditMode" fontIcon="edit"></mat-icon> <mat-icon *ngIf="person.isInEditMode" fontIcon="save"></mat-icon></td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+</table>
