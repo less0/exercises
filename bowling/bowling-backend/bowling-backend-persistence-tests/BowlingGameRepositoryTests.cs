@@ -10,9 +10,8 @@ namespace bowling_backend_persistence_tests;
 public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture>
 {
     private readonly RawDbAccess _rawDbAccess = new(Constants.ServerConnectionString);
-    private readonly BowlingGameRepository _repository;
+
     private IConfigurationRoot _configuration;
-    private BowlingDataContext _dataContext;
 
     public BowlingGameRepositoryTests()
     {
@@ -20,27 +19,29 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
         _rawDbAccess.WaitForConnection();
         InitializeDatabase();
         _rawDbAccess.ClearDatabase();
-
-        _repository = new BowlingGameRepository(_dataContext);
     }
 
     [Fact]
     public void Save_GameIsSaved()
     {
+        BowlingGameRepository repository = new(new(_configuration));
+
         var userId = Guid.NewGuid().ToString();
 
         var game = BowlingGame.StartNew(new[]{ "Player" });
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
         _rawDbAccess.NumberOfRows().Should().Be(1);
     }
 
     [Fact]
     public void Save_UserIdIsSavedWithGame()
     {
+        BowlingGameRepository repository = new(new(_configuration));
+
         var userId = Guid.NewGuid().ToString();
         var game = BowlingGame.StartNew(new[] { "Player" });
 
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
 
         _rawDbAccess.GetValueByGameId<string>(game.Id, "UserId").Should().Be(userId);
     }
@@ -48,10 +49,12 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
     [Fact]
     public void Save_PlayerNamesAreSavedWithGame()
     {
+        BowlingGameRepository repository = new(new(_configuration));
+
         var userId = Guid.NewGuid().ToString();
         var game = BowlingGame.StartNew(new[] { "Huey", "Dewie", "Louie" });
 
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
 
         _rawDbAccess.GetValueByGameId<string>(game.Id, "PlayerNames").Should().Be("Huey,Dewie,Louie");
     }
@@ -62,6 +65,8 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
     [InlineData(9, "0,0", 0, true)]
     public void Save_FrameDataIsSavedCorrectly(int frameIndex, string expectedRolls, int expectedBonusPoints, bool expectedIsLastFrame)
     {
+        BowlingGameRepository repository = new(new(_configuration));
+
         var userId = Guid.NewGuid().ToString();
         var game = BowlingGame.StartNew(new[] { "Player" });
         game.AddRoll(10);
@@ -73,7 +78,7 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
             game.AddRoll(0);
         }
     
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
     
         var frameId = game.Frames[0][frameIndex].Id;
 
@@ -85,12 +90,18 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
     [Fact]
     public void GetByEntityIdAndUserId_GameIsLoaded()
     {
+        BowlingDataContext dataContext = new(_configuration);
+        BowlingGameRepository repository = new(dataContext);
+
         var game = BowlingGame.StartNew(new[] { "Player 1", "Player 2"});
         var userId = Guid.NewGuid().ToString();
 
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
 
-        var loadedGame = _repository.GetByEntityIdAndUserId(game.Id, userId);
+        dataContext.Dispose();
+        repository = new(new(_configuration));
+
+        var loadedGame = repository.GetByEntityIdAndUserId(game.Id, userId);
 
         loadedGame.Id.Should().Be(game.Id);
         loadedGame.PlayerNames.Should().BeEquivalentTo(game.PlayerNames, o => o.WithStrictOrdering());
@@ -99,6 +110,9 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
     [Fact]
     public void GetByEntityIdAndUserId_FramesAreLoadedInCorrectOrder()
     {
+        BowlingDataContext dataContext = new(_configuration);
+        BowlingGameRepository repository = new(dataContext);
+
         var userId = Guid.NewGuid().ToString();
         var game = BowlingGame.StartNew(new[] { "Player 1", "Player 2", "Player 3" });
         for (int i = 0; i < 60; i++)
@@ -106,9 +120,12 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
             game.AddRoll(0);
         }
 
-        _repository.Save(game, userId);
+        repository.Save(game, userId);
 
-        var loadedGame = _repository.GetByEntityIdAndUserId(game.Id, userId);
+        dataContext.Dispose();
+        repository = new(new(_configuration));
+
+        var loadedGame = repository.GetByEntityIdAndUserId(game.Id, userId);
 
         loadedGame.Frames.Should().NotBeEmpty();
         loadedGame.Frames.Should().HaveCount(3);
@@ -132,12 +149,18 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
     [InlineData(9, "0,0", 0, true)]
     public void Save_ChangesAreSaved(int frameIndex, string expectedRolls, int expectedBonusPoints, bool expectedIsLastFrame)
     {
+        BowlingDataContext dataContext = new(_configuration);
+        BowlingGameRepository repository = new(dataContext);
+
         var userId = Guid.NewGuid().ToString();
         var originalGame = BowlingGame.StartNew(new[] { "A" });
 
-        _repository.Save(originalGame, userId);
+        repository.Save(originalGame, userId);
 
-        var loadedGame = _repository.GetByEntityIdAndUserId(originalGame.Id, userId);
+        dataContext.Dispose();
+        repository = new(new(_configuration));
+
+        var loadedGame = repository.GetByEntityIdAndUserId(originalGame.Id, userId);
 
         loadedGame.AddRoll(10);
         loadedGame.AddRoll(4);
@@ -147,18 +170,18 @@ public class BowlingGameRepositoryTests : IAssemblyFixture<DockerDatabaseFixture
             loadedGame.AddRoll(0);
         }
 
-        _repository.Save(loadedGame, userId);
+        repository.Save(loadedGame, userId);
 
         _rawDbAccess.GetValueByFrameId<string>(loadedGame.Frames[0][frameIndex].Id, "Rolls").Should().Be(expectedRolls);
         _rawDbAccess.GetValueByFrameId<int>(loadedGame.Frames[0][frameIndex].Id, "BonusPoints").Should().Be(expectedBonusPoints);
         _rawDbAccess.GetValueByFrameId<bool>(loadedGame.Frames[0][frameIndex].Id, "IsLastFrame").Should().Be(expectedIsLastFrame);
     }
 
-    [MemberNotNull(nameof(_dataContext))]
     private void InitializeDatabase()
     {
-        _dataContext = new BowlingDataContext(_configuration);
-        _dataContext.Database.Migrate();
+        var dataContext = new BowlingDataContext(_configuration);
+        dataContext.Database.Migrate();
+        dataContext.Dispose();
     }
 
     [MemberNotNull(nameof(_configuration))]
