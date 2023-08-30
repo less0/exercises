@@ -49,7 +49,7 @@ public class BowlingGameRepository : IRepository<BowlingGame>
         var gameData = _dataContext.Set<DataModel.BowlingGame>()
                                    .Where(g => g.Id == gameId && g.UserId == userId)
                                    .Include(g => g.Frames)
-                                   .SingleOrDefault();
+                                   .Single();
         return _mapper.ReverseMap(gameData);
     }
 

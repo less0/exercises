@@ -19,6 +19,6 @@ public class RepeatAttribute : DataAttribute
 
     public override IEnumerable<object[]> GetData(MethodInfo testMethod)
     {
-        return Enumerable.Repeat(new object[0], _count);
+        return Enumerable.Repeat(Array.Empty<object>(), _count);
     }
 }
