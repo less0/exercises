@@ -20,9 +20,22 @@ export class EditableTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClient.get<Person[]>(`${Configuration.apiUrl}/persons`)
-      .subscribe(persons => this.persons = persons);
-    this.httpClient.get<Department[]>(`${Configuration.apiUrl}/departments`)
-      .subscribe(departments => this.departments = departments);
+      .subscribe(persons => {
+        this.persons = persons;
+        this.httpClient.get<Department[]>(`${Configuration.apiUrl}/departments`)
+          .subscribe(departments => {
+            this.departments = departments;
+
+            for (let personIndex = 0; personIndex < this.persons!.length; personIndex++) {
+              var department = this.persons![personIndex].department;
+              var departmentToSet = departments.find(d => d.name == department.name);
+              if(departmentToSet != undefined)
+              {
+                this.persons![personIndex].department = departmentToSet;
+              }
+            }
+          });
+      });
 
   }
 
