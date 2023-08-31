@@ -18,11 +18,15 @@ import { EditableTableComponent } from './editable-table/editable-table.componen
 import { FormsModule } from '@angular/forms';
 import { MatSortModule } from '@angular/material/sort';
 import { MatNativeDateModule } from '@angular/material/core';
+import { EditableFieldComponent } from './editable-field/editable-field.component';
+import { EditableDateFieldComponent } from './editable-date-field/editable-date-field.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditableTableComponent
+    EditableTableComponent,
+    EditableFieldComponent,
+    EditableDateFieldComponent
   ],
   imports: [
     BrowserModule,

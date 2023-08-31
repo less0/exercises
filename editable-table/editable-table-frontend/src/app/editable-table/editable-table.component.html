@@ -2,37 +2,21 @@
     <ng-container matColumnDef="firstName">
         <th mat-header-cell *matHeaderCellDef> First Name </th>
         <td mat-cell *matCellDef="let person">
-            <div *ngIf="!person.$$isInEditMode">{{person.firstName}}</div>
-            <mat-form-field *ngIf="person.$$isInEditMode" class="example-full-width">
-                <input matInput [(ngModel)]="person.firstName">
-            </mat-form-field>
+            <app-editable-field [(value)]="person.firstName" [editMode]="person.$$isInEditMode"></app-editable-field>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="lastName">
         <th mat-header-cell *matHeaderCellDef> Last Name </th>
         <td mat-cell *matCellDef="let person">
-            <div *ngIf="!person.$$isInEditMode">{{person.lastName}} </div>
-            <mat-form-field *ngIf="person.$$isInEditMode" class="example-full-width">
-                <input matInput [(ngModel)]="person.lastName">
-            </mat-form-field>
+            <app-editable-field [(value)]="person.lastName" [editMode]="person.$$isInEditMode"></app-editable-field>
         </td>
     </ng-container>
 
     <ng-container matColumnDef="dateOfBirth">
         <th mat-header-cell *matHeaderCellDef> Date of Birth </th>
         <td mat-cell *matCellDef="let person">
-            <div *ngIf="!person.$$isInEditMode">{{person.dateOfBirth | date : "longDate"}}</div>
-            <mat-form-field *ngIf="person.$$isInEditMode" class="example-form-field">
-                <input matInput [matDatepicker]="datepicker" [(ngModel)]="person.dateOfBirth">
-                <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-                <mat-datepicker #datepicker>
-                    <mat-datepicker-actions>
-                        <button mat-button matDatepickerCancel>Cancel</button>
-                        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
-                    </mat-datepicker-actions>
-                </mat-datepicker>
-            </mat-form-field>
+            <app-editable-date-field [(value)]="person.dateOfBirth" [editMode]="person.$$isInEditMode"></app-editable-date-field>
         </td>
     </ng-container>
 

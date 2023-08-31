@@ -1,0 +1,4 @@
+<div *ngIf="!editMode">{{value}}</div>
+<mat-form-field *ngIf="editMode" class="example-full-width">
+    <input matInput (ngModelChange)="onInputValueChange($event)" [ngModel]="value">
+</mat-form-field>
