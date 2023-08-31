@@ -10,7 +10,9 @@ builder.Services.AddPersistence();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddCors(corsOptions =>{ 
     CorsPolicyBuilder policyBuilder = new();
-    policyBuilder.AllowAnyOrigin();
+    policyBuilder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
     corsOptions.AddDefaultPolicy(policyBuilder.Build());
     });
 
