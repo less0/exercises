@@ -37,9 +37,8 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let person">
-            <a *ngIf="!person.$$isInEditMode" (click)="person.$$isInEditMode = true" href="#"><mat-icon
-                    fontIcon="edit"></mat-icon></a>
-            <a *ngIf="person.$$isInEditMode" (click)="save(person)" href="#"><mat-icon fontIcon="save"></mat-icon></a>
+            <button mat-icon-button color="primary" *ngIf="!person.$$isInEditMode" (click)="person.$$isInEditMode = true"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="accent" *ngIf="person.$$isInEditMode" (click)="save(person)"><mat-icon>save</mat-icon></button>
         </td>
     </ng-container>
 
