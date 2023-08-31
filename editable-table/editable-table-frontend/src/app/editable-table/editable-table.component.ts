@@ -12,10 +12,10 @@ import { OnInit } from '@angular/core';
 })
 export class EditableTableComponent implements OnInit {
   columnsToDisplay = ['firstName', 'lastName', 'dateOfBirth', 'department', 'actions'];
-  departments : Department[] | undefined
-  persons : Person[] | undefined
+  departments: Department[] | undefined
+  persons: Person[] | undefined
 
-  constructor(private httpClient : HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -23,5 +23,30 @@ export class EditableTableComponent implements OnInit {
       .subscribe(persons => this.persons = persons);
     this.httpClient.get<Department[]>(`${Configuration.apiUrl}/departments`)
       .subscribe(departments => this.departments = departments);
+
+  }
+
+  save(person: Person): void {
+    let personLink = person.links!["self"];
+
+    if (personLink == undefined) {
+      return;
+    }
+
+    let personToSend: Person =
+    {
+      id: person.id,
+      firstName: person.firstName,
+      lastName: person.lastName,
+      dateOfBirth: person.dateOfBirth,
+      department: person.department,
+      $$isInEditMode: false,
+      links: undefined
+    };
+
+    this.httpClient.put(`${Configuration.apiUrl}${personLink}`, personToSend)
+      .subscribe(_ => {
+        person.$$isInEditMode = false
+      });
   }
 }

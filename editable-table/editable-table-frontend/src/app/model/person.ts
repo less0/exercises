@@ -7,7 +7,6 @@ export class Person {
     dateOfBirth! : Date
     department! : Department
 
-    isInEditMode : boolean = false;
-
-    links! : { [name: string]: string; }
+    $$isInEditMode : boolean = false;
+    links : { [name: string]: string; } | undefined = undefined
 }
