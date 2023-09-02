@@ -1,0 +1,10 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672"
+  producer:
+    build: ./producer-worker
+  consumer:
+    build: ./consumer-worker
