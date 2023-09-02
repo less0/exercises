@@ -1,0 +1,12 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672"
+  publisher:
+    build: ./publisher
+  subscriber1:
+    build: ./subscriber
+  subscriber2:
+    build: ./subscriber
