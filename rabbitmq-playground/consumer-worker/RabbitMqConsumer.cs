@@ -76,7 +76,7 @@ internal class RabbitMqConsumer : IHostedService
         _consumer = new EventingBasicConsumer(_channel);
         _consumer.Received += OnMessageReceived;
         _channel.BasicConsume(queue: "hello",
-                             autoAck: true,
+                             autoAck: false,
                              consumer: _consumer);
     }
 
@@ -85,5 +85,9 @@ internal class RabbitMqConsumer : IHostedService
         var body = e.Body.ToArray();
         var message = Encoding.UTF8.GetString(body);
         _logger.LogInformation("Received message: {message}", message);
+        _logger.LogInformation("Doing work.");
+        Thread.Sleep(Random.Shared.Next(1000, 3500));
+        _logger.LogInformation("Done.");
+        _channel!.BasicAck(e.DeliveryTag, false);
     }
 }
