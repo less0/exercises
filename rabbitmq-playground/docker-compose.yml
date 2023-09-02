@@ -6,5 +6,7 @@ services:
       - "5672"
   producer:
     build: ./producer-worker
-  consumer:
+  consumer1:
+    build: ./consumer-worker
+  consumer2:
     build: ./consumer-worker
