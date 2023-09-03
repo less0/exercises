@@ -3,7 +3,7 @@ WORKDIR /App
 
 COPY . . 
 RUN dotnet restore
-RUN dotnet build -c Release -o out
+RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/runtime:6.0
 WORKDIR /App
