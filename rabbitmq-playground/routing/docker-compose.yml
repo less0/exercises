@@ -10,3 +10,5 @@ services:
     build: ./consumer
     environment:
       - "Routes=warning,error"
+  info-consumer:
+    build: ./consumer
