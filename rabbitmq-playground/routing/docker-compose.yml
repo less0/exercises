@@ -1,0 +1,12 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672"
+      - "15672:15672"
+  producer:
+    build: ./producer
+  consumer:
+    build: ./consumer
+    environment:
+      - "Routes=critical,error"
