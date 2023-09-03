@@ -9,4 +9,4 @@ services:
   consumer:
     build: ./consumer
     environment:
-      - "Routes=critical,error"
+      - "Routes=warning,error"

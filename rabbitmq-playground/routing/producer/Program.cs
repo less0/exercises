@@ -6,4 +6,4 @@ var hostBuilder = Host.CreateApplicationBuilder();
 hostBuilder.Services.AddHostedService<RabbitMqProducer>();
 
 var host = hostBuilder.Build();
-host.Start();
+host.Run();
