@@ -1,6 +1,14 @@
-servies:
+services:
   rabbitmq:
     image: rabbitmq:management
     ports:
       - "5672"
       - "15672:15672"
+  producer:
+    build: ./producer
+    environment:
+      - RabbitMQ__Host=rabbitmq
+  consumer:
+    build: ./consumer
+    environment:
+      - RabbitMQ__Host=rabbitmq
