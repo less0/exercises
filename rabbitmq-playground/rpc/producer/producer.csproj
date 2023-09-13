@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Kertscher.RabbitMq.Worker" Version="0.1.0" />
+    <PackageReference Include="Kertscher.RabbitMq.Worker" Version="0.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
 
