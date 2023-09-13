@@ -81,8 +81,12 @@ public class RpcProducer : RabbitMqWorker
 
         cancellationToken.Register(() =>
         {
+            if (!_callbackMapper.TryRemove(properties.CorrelationId, out var tcs))
+            {
+                return;
+            }
+            tcs.SetCanceled(cancellationToken);
             _logger.LogInformation("Call was cancelled.");
-            _callbackMapper.TryRemove(properties.CorrelationId, out _);
         });
 
         taskCompletionSource.Task.Wait(cancellationToken);
