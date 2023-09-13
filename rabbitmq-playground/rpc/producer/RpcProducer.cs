@@ -58,7 +58,7 @@ public class RpcProducer : RabbitMqWorker
         _timer.Start();
     }
 
-    private void TimerOnElapsed(object? sender, ElapsedEventArgs e)
+    private async void TimerOnElapsed(object? sender, ElapsedEventArgs e)
     {
         _logger.LogInformation("Timer elapsed");
 
@@ -68,33 +68,44 @@ public class RpcProducer : RabbitMqWorker
             return;
         }
 
-        CancellationTokenSource cancellationTokenSource = new(2000);
-        CancellationToken cancellationToken = cancellationTokenSource.Token;
-        TaskCompletionSource<byte[]> taskCompletionSource = new();
-        
-        var properties = _channel!.CreateBasicProperties();
-        properties.ReplyTo = _replyQueueName;
-        properties.CorrelationId = Guid.NewGuid().ToString();
-        _callbackMapper.TryAdd(properties.CorrelationId, taskCompletionSource);
-        
-        _channel.BasicPublish("target", "getSomething", properties, Array.Empty<byte>());
+        await CallRpcMethod();
+    }
 
-        cancellationToken.Register(() =>
+    private async Task CallRpcMethod()
+    {
+        try
         {
-            if (!_callbackMapper.TryRemove(properties.CorrelationId, out var tcs))
-            {
-                return;
-            }
-            tcs.SetCanceled(cancellationToken);
-            _logger.LogInformation("Call was cancelled.");
-        });
+            CancellationTokenSource cancellationTokenSource = new(2000);
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
+            TaskCompletionSource<byte[]> taskCompletionSource = new();
 
-        taskCompletionSource.Task.Wait(cancellationToken);
-        if (taskCompletionSource.Task.IsCompletedSuccessfully)
-        {
-            var message = Encoding.UTF8.GetString(taskCompletionSource.Task.Result);
+            var properties = _channel!.CreateBasicProperties();
+            properties.ReplyTo = _replyQueueName;
+            properties.CorrelationId = Guid.NewGuid().ToString();
+            _callbackMapper.TryAdd(properties.CorrelationId, taskCompletionSource);
+
+            _channel.BasicPublish("target", "getSomething", properties, Array.Empty<byte>());
+
+            cancellationToken.Register(() => CancelResponse(properties.CorrelationId));
+
+            var response = await taskCompletionSource.Task;
+            var message = Encoding.UTF8.GetString(response);
             _logger.LogInformation("Received response: {message}", message);
         }
+        catch (TaskCanceledException)
+        {
+            _logger.LogInformation("The call was cancelled.");
+        }
+    }
+
+    private void CancelResponse(string correlationId)
+    {
+        if (!_callbackMapper.TryRemove(correlationId, out var taskCompletionSource))
+        {
+            return;
+        }
+
+        taskCompletionSource.SetCanceled();
     }
 
     private void ConsumerOnReceived(object? sender, BasicDeliverEventArgs e)
