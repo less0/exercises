@@ -87,12 +87,12 @@ Client --> requestquote
 
 #### Overview
 
-| Neighbor | Description |
-|-|-|
-| User | A user that is not associated with a role is only able to register with one of the existing roles |
-| Brewers | Manages their brewery, including the selection of beers the brewery produces. |
-| Sellers | Manages their wholesale, especially the inventory that allows requesting quotes |
-| Clients | Are only able to request quotes to purchase beers. |
+| Neighbor | Description                                                                                       |
+|----------|---------------------------------------------------------------------------------------------------|
+| User     | A user that is not associated with a role is only able to register with one of the existing roles |
+| Brewers  | Manages their brewery, including the selection of beers the brewery produces.                     |
+| Sellers  | Manages their wholesale, especially the inventory that allows requesting quotes                   |
+| Clients  | Are only able to request quotes to purchase beers.                                                |
 
 ## Solution Strategy
 
@@ -191,7 +191,7 @@ The application is deployed using `docker compose`. The container names correspo
 () HTTP as http2
 
 package Application {
-    node frontend [
+    node frontend [
         bob-frontend
 
         Ports: ""80:80""
@@ -274,8 +274,8 @@ package Application {
     ]
 }
 
-http1 --> Application.frontend : Port 80
-http2 --> Application.backend : Port 8080
+http1 --> frontend : Port 80
+http2 --> backend : Port 8080
 
 backenddb <- backend
 
@@ -304,11 +304,11 @@ User authentication is implemented using Auth0. Since for this exercise, a comme
 
 There are 3 roles that correspond to the actors in the described use-cases
 
-| Role | Description | Privileges |
-|------|-|------------|
-| Client | A client of the page that can buy beer | Request quote<br /> See quotes|
-| Brewer | A brewer managing a brewery | Update brewery info<br />Add beer<br /> Delete beer<br /> Update beer
-| Seller | A seller managing a wholesale | Update wholesale<br /> Add beer to inventory |
+| Role   | Description                            | Privileges                                                            |
+|--------|----------------------------------------|-----------------------------------------------------------------------|
+| Client | A client of the page that can buy beer | Request quote<br /> See quotes                                        |
+| Brewer | A brewer managing a brewery            | Update brewery info<br />Add beer<br /> Delete beer<br /> Update beer |
+| Seller | A seller managing a wholesale          | Update wholesale<br /> Add beer to inventory                          |
 
 For sake of simplicity, wholesales and breweries are associated with exactly one seller or brewer respectively.
 
