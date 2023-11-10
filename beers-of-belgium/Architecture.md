@@ -2,13 +2,17 @@
 
 ## Introduction and Goals
 
-The goal of the project is, to design a system that allows breweries, wholesale sellers and clients to interact to eventually sell beer to the clients.
+The goal of the project is, to design a system that allows breweries, wholesale sellers and clients to interact to
+eventually sell beer to the clients. As an addition to the original task, the user shall be able to add multiple beers 
+a single order. Multiple beers are constrained to be sold by the same wholesale, i.e. the user is not able to add a beer
+to their basket if they already have a beer in their basket if it's not sold by the same wholesale.
 
 [Original Task](https://www.reddit.com/r/csharp/comments/165y1da/project_challenge_submitted_by_a_real_company_for/)
 
 ## Constraints
 
-This is an exercise project that has no dependencies on any legacy system. Furthermore there are no monetary or time constraints. It's done when it's done. Or maybe never.
+This is an exercise project that has no dependencies on any legacy system. Furthermore there are no monetary or time
+constraints. It's done when it's done. Or maybe never.
 
 ## Context & Scope
 
@@ -64,9 +68,13 @@ actor Seller
 
 package "Beers of Belgium" {
     usecase "Update Wholesale" as updatewholesale
+    usecase "List Breweries" as listbreweries
+    usecase "List Beers" as listbeers
     usecase "Add Beer to Inventory" as addtoinventory
 }
 
+Seller --> listbreweries
+Seller --> listbeers
 Seller --> updatewholesale
 Seller --> addtoinventory
 ```
@@ -79,28 +87,40 @@ left to right direction
 actor Client
 
 package "Beers of Belgium" {
+    usecase "List Breweries" as listbreweries
+    usecase "List Beers" as listbeers
+    usecase "Add to Basket" as addtobasket
     usecase "Request Quote" as requestquote
+    usecase "View Orders" as vieworders
 }
 
+Client --> listbreweries
+Client --> listbeers
+Client --> addtobasket
 Client --> requestquote
+Client --> vieworders
 ```
 
 #### Overview
 
-| Neighbor | Description                                                                                       |
-|----------|---------------------------------------------------------------------------------------------------|
-| User     | A user that is not associated with a role is only able to register with one of the existing roles |
-| Brewers  | Manages their brewery, including the selection of beers the brewery produces.                     |
-| Sellers  | Manages their wholesale, especially the inventory that allows requesting quotes                   |
-| Clients  | Are only able to request quotes to purchase beers.                                                |
+| Neighbor | Description                                                                                                           |
+|----------|-----------------------------------------------------------------------------------------------------------------------|
+| User     | A user that is not associated with a role is only able to register with one of the existing roles                     |
+| Brewers  | Manages their brewery, including the selection of beers the brewery produces.                                         |
+| Sellers  | Manages their wholesale, especially the inventory that allows requesting quotes.                                      |
+| Clients  | Lists breweries and their beers, adds beers to their basket, requests quotes from wholesales, and views their orders. |
 
 ## Solution Strategy
 
-There is a clear separation in domains (Breweries, Wholesale Inventory, Wholesale Billing) that renders a microservice-approach promising, therefor the application shall be implemented using microservices.
+There is a clear separation in domains (Breweries, Wholesale Inventory, Wholesale Billing) that renders a
+microservice-approach promising, therefor the application shall be implemented using microservices.
 
-The frontend must be implemented to be run in a browser. Because I recently have gained some experience in Angular which I'd like to expand the frontend shall be implemented using Angular. 
+The frontend must be implemented to be run in a browser. Because I recently have gained some experience in Angular which
+I'd like to expand the frontend shall be implemented using Angular. The users basket is fully implemented in the
+frontend.
 
-As a mediator between the frontend and the microservices, a backend-for-frontend must be implemented. See the subsequent section for the communication between the components.
+As a mediator between the frontend and the microservices, a backend-for-frontend must be implemented. See the subsequent
+section for the communication between the components.
 
 ## Macro-Architecture
 
@@ -108,17 +128,19 @@ As a mediator between the frontend and the microservices, a backend-for-frontend
 
 #### `bob-frontend`
 
-The frontend of the application that is implemented to be run in a browser. 
+The frontend of the application that is implemented to be run in a browser.
 
 #### `bob-backend`
 
-Since the application is implemented using microservices for the logic, this component provides the main entry point to the application for the frontend. The backend provides a REST-API.
+Since the application is implemented using microservices for the logic, this component provides the main entry point to
+the application for the frontend. The backend provides a REST-API.
 
 #### `bob-usermanagement`
 
-This component is responsible for managing users and roles. It provides its services to the `bob-backend` synchronously via HTTP.  
+This component is responsible for managing users and roles. It provides its services to the `bob-backend` synchronously
+via HTTP.
 
-#### `bob-brewery` 
+#### `bob-brewery`
 
 This components is responsible for managing breweries and their beers.
 
@@ -136,15 +158,19 @@ This component is responsible for managing the billing of the wholesale sellers.
 
 ### Communication
 
-The `bob-frontend` communicates synchronously via a REST-API with the `bob-backend`, as well as the `bob-backend` with the `bob-usermanagement`. 
+The `bob-frontend` communicates synchronously via a REST-API with the `bob-backend`, as well as the `bob-backend` with
+the `bob-usermanagement`.
 
-Communication between the `bob-backend` and the logic services (`bob-brewery`, `bob-wholesale`, `bob-wholesale-inventory`, `bob-wholesale-billing`) is conducted asynchronously via RabbitMQ. Distributed transactions are coordinated by the `bob-backend`.
+Communication between the `bob-backend` and the logic
+services (`bob-brewery`, `bob-wholesale`, `bob-wholesale-inventory`, `bob-wholesale-billing`) is conducted
+asynchronously via RabbitMQ. Distributed transactions are coordinated by the `bob-backend`.
 
 The REST-API definition and the RabbitMQ messages will be described in an auxiliary document.
 
 ### Persistence
 
-Each of the services has its own instance of a SQL Server Express 2022 database running in its own container. Furthermore the backend has its own instance of SQL Server Express 2022 for storing the distributed transactions.
+Each of the services has its own instance of a SQL Server Express 2022 database running in its own container.
+Furthermore the backend has its own instance of SQL Server Express 2022 for storing the distributed transactions.
 
 ### Application Structure
 
@@ -182,9 +208,10 @@ inventory --> inventorydb
 billing --> billingdb
 ```
 
-### Deployment 
+### Deployment
 
-The application is deployed using `docker compose`. The container names correspond to the application components mentioned above.
+The application is deployed using `docker compose`. The container names correspond to the application components
+mentioned above.
 
 ```plantuml
 () HTTP as http1
@@ -300,23 +327,27 @@ billing --> billingdb
 
 ### Authentication and Authorization
 
-User authentication is implemented using Auth0. Since for this exercise, a commercial license for Auth0 is too expensive, I opted to implement a separate `bob-usermanagement` service that is responsible for storing users role associations.
+User authentication is implemented using Auth0. Since for this exercise, a commercial license for Auth0 is too
+expensive, I opted to implement a separate `bob-usermanagement` service that is responsible for storing users role
+associations.
 
 There are 3 roles that correspond to the actors in the described use-cases
 
 | Role   | Description                            | Privileges                                                            |
 |--------|----------------------------------------|-----------------------------------------------------------------------|
-| Client | A client of the page that can buy beer | Request quote<br /> See quotes                                        |
+| Client | A client of the page that can buy beer | Request quote<br /> See quotes<br/>List breweries<br/>List beers      |
 | Brewer | A brewer managing a brewery            | Update brewery info<br />Add beer<br /> Delete beer<br /> Update beer |
-| Seller | A seller managing a wholesale          | Update wholesale<br /> Add beer to inventory                          |
+| Seller | A seller managing a wholesale          | Update wholesale info<br /> Add beer to inventory                     |
 
 For sake of simplicity, wholesales and breweries are associated with exactly one seller or brewer respectively.
 
-A user that has no role associated has to be asked after their login what kind of role they have and are associated with that role in the service. Furthermore a wholesale seller has to name its wholesale and a brewer has to name its brewery, which then is created in the respective service. 
+A user that has no role associated has to be asked after their login what kind of role they have and are associated with
+that role in the service. Furthermore a wholesale seller has to name its wholesale and a brewer has to name its brewery,
+which then is created in the respective service.
 
 ### Monitoring
 
-No monitoring will be implemented for this exercise, because this would be beyond the scope. 
+No monitoring will be implemented for this exercise, because this would be beyond the scope.
 
 ### Logging
 
