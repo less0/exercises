@@ -432,3 +432,4 @@ e2e/*.map
 .env
 auth0.ts
 bowling/bowling-backend/bowling-backend-api/appsettings.local.json
+*.local.json
